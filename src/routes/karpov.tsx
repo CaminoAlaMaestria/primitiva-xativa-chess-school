@@ -87,7 +87,7 @@ function Card({ n, title, icon: Icon, children, className = "" }: { n: number; t
 function Index() {
   const [g, setG] = useState(0);
   return (
-    <main className="min-h-screen bg-background">
+    <main className="karpov-contrast min-h-screen bg-background">
       <BackToPanel floating />
       <header className="border-b-2 border-primary/60 bg-card px-6 py-14 text-center">
         <p className="font-display text-sm tracking-[0.4em] text-primary">Campeón del mundo · 1951 – Zlatoúst, URSS</p>

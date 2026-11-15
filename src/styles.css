@@ -241,3 +241,19 @@ body:has(#sourceImage) { font-family: inherit; font-size: 16px; }
 .aula-bar svg, .aula-bar .text-primary { color: #00d4c7; }
 /* Botones blancos con texto azul marino, como en Peones bajo presión */
 button.bg-card, a.bg-card { background: #ffffff; color: #071d2f; }
+
+/* Ficha Kárpov: recuadros oscuros con letras blancas para proyector */
+.karpov-contrast .bg-muted {
+  background-color: #071d2f;
+  color: #ffffff;
+}
+.karpov-contrast .bg-muted :is(p, li, span, h3, div),
+.karpov-contrast .bg-muted .text-foreground,
+.karpov-contrast .bg-muted .text-muted-foreground {
+  color: #ffffff;
+}
+.karpov-contrast .bg-muted :is(.text-primary, b.text-primary),
+.karpov-contrast .bg-muted .text-primary * {
+  color: #7fd8c8;
+}
+.karpov-contrast button.bg-muted:hover { background-color: #0c2c45; }
