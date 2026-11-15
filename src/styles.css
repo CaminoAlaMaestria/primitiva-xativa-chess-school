@@ -228,3 +228,9 @@ body:has(#sourceImage) { font-family: inherit; font-size: 16px; }
   --sq-dark: #92c4b7;
   --wood: #071d2f;
 }
+
+/* Cabecera del panel y de las ventanas: colores de la cabecera de Peones bajo presión */
+.aula-header { background: #071d2f; color: #ffffff; border-bottom: 4px solid #00d4c7; }
+.aula-header h1 { color: #ffffff; }
+.aula-header .aula-kicker, .aula-header a, .aula-header svg { color: #00d4c7; }
+.aula-header .aula-intro { color: #e4f0f1; }

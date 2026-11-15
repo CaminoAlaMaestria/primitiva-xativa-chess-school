@@ -24,10 +24,10 @@ const WINDOWS = [
 function Index() {
   return (
     <main className="min-h-screen bg-background">
-      <header className="border-b-2 border-primary/60 bg-gradient-to-b from-wood/60 to-background px-6 py-16 text-center">
-        <p className="font-display text-sm tracking-[0.4em] text-primary">Panel del profesor</p>
+      <header className="aula-header px-6 py-16 text-center">
+        <p className="font-display text-sm tracking-[0.4em] text-primary aula-kicker">Panel del profesor</p>
         <h1 className="mt-3 font-display text-5xl font-black uppercase tracking-wide text-primary sm:text-7xl">Aula de Ajedrez</h1>
-        <p className="mt-3 text-2xl italic text-muted-foreground">Elige una ventana para empezar la clase</p>
+        <p className="mt-3 text-2xl italic text-muted-foreground aula-intro">Elige una ventana para empezar la clase</p>
       </header>
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-12 md:grid-cols-3">
         {WINDOWS.map(({ to, n, title, text, count, icon: Icon }) => (

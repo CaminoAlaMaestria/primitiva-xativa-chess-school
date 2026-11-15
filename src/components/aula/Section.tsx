@@ -22,17 +22,17 @@ export function BackToPanel({ floating = false }: { floating?: boolean }) {
 export function SectionPage({ kicker, title, intro, fichas, icon }: { kicker: string; title: string; intro: string; fichas: Ficha[]; icon: ReactNode }) {
   return (
     <main className="min-h-screen bg-background">
-      <header className="border-b-2 border-primary/60 bg-gradient-to-b from-wood/60 to-background px-6 py-12">
+      <header className="aula-header px-6 py-12">
         <div className="mx-auto max-w-4xl">
           <BackToPanel />
           <div className="mt-6 flex items-center gap-4">
             <div className="text-primary">{icon}</div>
             <div>
-              <p className="font-display text-xs tracking-[0.4em] text-primary">{kicker}</p>
+              <p className="font-display text-xs tracking-[0.4em] text-primary aula-kicker">{kicker}</p>
               <h1 className="font-display text-4xl font-black uppercase tracking-wide text-primary sm:text-5xl">{title}</h1>
             </div>
           </div>
-          <p className="mt-4 text-xl italic text-muted-foreground">{intro}</p>
+          <p className="mt-4 text-xl italic text-muted-foreground aula-intro">{intro}</p>
         </div>
       </header>
       <ul className="mx-auto max-w-4xl space-y-3 px-4 py-10">
