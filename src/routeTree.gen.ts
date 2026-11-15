@@ -10,12 +10,30 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AperturaEspanolaRouteImport } from './routes/apertura-espanola'
+import { Route as CampeonesRouteImport } from './routes/campeones'
+import { Route as ClasesAvanzadasRouteImport } from './routes/clases-avanzadas'
 import { Route as KarpovRouteImport } from './routes/karpov'
 import { Route as PeonesBajoPresionRouteImport } from './routes/peones-bajo-presion'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AperturaEspanolaRoute = AperturaEspanolaRouteImport.update({
+  id: '/apertura-espanola',
+  path: '/apertura-espanola',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CampeonesRoute = CampeonesRouteImport.update({
+  id: '/campeones',
+  path: '/campeones',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ClasesAvanzadasRoute = ClasesAvanzadasRouteImport.update({
+  id: '/clases-avanzadas',
+  path: '/clases-avanzadas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const KarpovRoute = KarpovRouteImport.update({
@@ -31,30 +49,61 @@ const PeonesBajoPresionRoute = PeonesBajoPresionRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/apertura-espanola': typeof AperturaEspanolaRoute
+  '/campeones': typeof CampeonesRoute
+  '/clases-avanzadas': typeof ClasesAvanzadasRoute
   '/karpov': typeof KarpovRoute
   '/peones-bajo-presion': typeof PeonesBajoPresionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/apertura-espanola': typeof AperturaEspanolaRoute
+  '/campeones': typeof CampeonesRoute
+  '/clases-avanzadas': typeof ClasesAvanzadasRoute
   '/karpov': typeof KarpovRoute
   '/peones-bajo-presion': typeof PeonesBajoPresionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/apertura-espanola': typeof AperturaEspanolaRoute
+  '/campeones': typeof CampeonesRoute
+  '/clases-avanzadas': typeof ClasesAvanzadasRoute
   '/karpov': typeof KarpovRoute
   '/peones-bajo-presion': typeof PeonesBajoPresionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/karpov' | '/peones-bajo-presion'
+  fullPaths:
+    | '/'
+    | '/apertura-espanola'
+    | '/campeones'
+    | '/clases-avanzadas'
+    | '/karpov'
+    | '/peones-bajo-presion'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/karpov' | '/peones-bajo-presion'
-  id: '__root__' | '/' | '/karpov' | '/peones-bajo-presion'
+  to:
+    | '/'
+    | '/apertura-espanola'
+    | '/campeones'
+    | '/clases-avanzadas'
+    | '/karpov'
+    | '/peones-bajo-presion'
+  id:
+    | '__root__'
+    | '/'
+    | '/apertura-espanola'
+    | '/campeones'
+    | '/clases-avanzadas'
+    | '/karpov'
+    | '/peones-bajo-presion'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AperturaEspanolaRoute: typeof AperturaEspanolaRoute
+  CampeonesRoute: typeof CampeonesRoute
+  ClasesAvanzadasRoute: typeof ClasesAvanzadasRoute
   KarpovRoute: typeof KarpovRoute
   PeonesBajoPresionRoute: typeof PeonesBajoPresionRoute
 }
@@ -66,6 +115,27 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/apertura-espanola': {
+      id: '/apertura-espanola'
+      path: '/apertura-espanola'
+      fullPath: '/apertura-espanola'
+      preLoaderRoute: typeof AperturaEspanolaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/campeones': {
+      id: '/campeones'
+      path: '/campeones'
+      fullPath: '/campeones'
+      preLoaderRoute: typeof CampeonesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/clases-avanzadas': {
+      id: '/clases-avanzadas'
+      path: '/clases-avanzadas'
+      fullPath: '/clases-avanzadas'
+      preLoaderRoute: typeof ClasesAvanzadasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/karpov': {
@@ -87,6 +157,9 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AperturaEspanolaRoute: AperturaEspanolaRoute,
+  CampeonesRoute: CampeonesRoute,
+  ClasesAvanzadasRoute: ClasesAvanzadasRoute,
   KarpovRoute: KarpovRoute,
   PeonesBajoPresionRoute: PeonesBajoPresionRoute,
 }
