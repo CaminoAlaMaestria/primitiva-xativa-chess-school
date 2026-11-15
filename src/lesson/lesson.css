@@ -389,3 +389,12 @@ footer { max-width: 1500px; padding: 25px clamp(18px, 4vw, 64px); margin: auto; 
 .board-stage { grid-template-columns: minmax(0, 620px) minmax(240px, 320px) !important; justify-content: start; }
 .main-nav { max-width: 620px; margin: 12px 0 0; }
 @media (max-width: 700px) { .board-stage { grid-template-columns: 1fr !important; } .board-stage > .move-panel { height: auto; } }
+
+.engine-toggle{border:2px solid #071d2f;background:#fff;color:#071d2f;font-weight:700;border-radius:8px;padding:8px 12px;cursor:pointer}
+.engine-toggle.on{background:#1f7a6d;border-color:#1f7a6d;color:#fff}
+.kv-engine{margin:10px 0;border:1px solid #c9d6d2;background:#fff;color:#071d2f;border-radius:10px;padding:10px 12px}
+.kv-engine-head{display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:6px}
+.kv-eng-toggle{border:2px solid #071d2f;background:#fff;color:#071d2f;border-radius:999px;padding:3px 12px;font-weight:700;cursor:pointer}
+.kv-eng-toggle.on{background:#1f7a6d;border-color:#1f7a6d;color:#fff}
+.kv-eng-out{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.95rem}
+.kv-eng-score{font-size:1.3rem}

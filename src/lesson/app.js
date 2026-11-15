@@ -1049,6 +1049,19 @@ function undoMove() {
   goToPly(cursor - 1);
 }
 
+let mainPlaying = false;
+function setMainPlayIcon() { const b = $('#mainPlay'); if (b) { b.textContent = mainPlaying ? '❚❚' : '▷'; b.setAttribute('aria-label', mainPlaying ? 'Pausa' : 'Reproducir'); } }
+async function mainPlayToggle() {
+  if (mainPlaying) { mainPlaying = false; isReplaying = false; setMainPlayIcon(); return; }
+  if (!lineMoves.length) { const line = positions[activePosition].line || []; if (!line.length) { $('#boardHint').textContent = 'Este diagrama no tiene secuencia para reproducir.'; return; }
+    const g = new Chess(baseFen); const lm = [];
+    for (const u of line) { try { const m = g.move({ from: u.slice(0,2), to: u.slice(2,4), promotion: u[4] || 'q' }); if (!m) break; lm.push({ uci: m.from + m.to + (m.promotion || ''), san: m.san, nag: '' }); } catch { break; } }
+    lineMoves = lm; goToPly(0); }
+  if (cursor >= lineMoves.length) goToPly(0);
+  mainPlaying = true; setMainPlayIcon();
+  while (mainPlaying && cursor < lineMoves.length) { await sleep(900); if (!mainPlaying) break; goToPly(cursor + 1); }
+  mainPlaying = false; setMainPlayIcon();
+}
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 async function replayLine() {
   if (lineMoves.length) {
@@ -1092,7 +1105,9 @@ async function replayLine() {
   clearEngineDisplay('La posición ha cambiado. Vuelve a analizar cuando tengas un nuevo plan.');
 }
 
+let engineAuto = false, engineAutoTimer = null;
 function clearEngineDisplay(message) {
+  if (engineAuto && message && !/^(Stockfish necesita|No se pudo)/.test(message)) { clearTimeout(engineAutoTimer); engineAutoTimer = setTimeout(() => { try { analyzePosition(); } catch {} }, 350); }
   engineLines.clear();
   const text = message || 'El motor mostrará aquí evaluación, mejor línea y profundidad.';
   $('#engineOutput').innerHTML = `<div class="engine-empty"><span>♞</span><p>${text}</p></div>`;
@@ -1464,9 +1479,27 @@ function initializeEvents() {
   });
   $('#restoreText').addEventListener('click', restoreCurrentText);
 
+  let teacherOk = false;
+  ['#openBoardEditorBtn', '#openTextEditorBtn', '#saveMoves', '#savePosition', '#saveText'].forEach(id => {
+    const b = $(id); if (!b) return;
+    b.addEventListener('click', (e) => {
+      if (teacherOk) return;
+      const pw = window.prompt('Contraseña del profesor:');
+      if (pw === '2222') { teacherOk = true; return; }
+      e.stopImmediatePropagation(); e.preventDefault();
+      if (pw !== null) window.alert('Contraseña incorrecta.');
+    }, true);
+  });
+  $('#engineToggle').addEventListener('click', () => {
+    engineAuto = !engineAuto;
+    const b = $('#engineToggle'); b.setAttribute('aria-pressed', String(engineAuto));
+    b.textContent = engineAuto ? '⏻ Motor encendido' : '⏻ Motor apagado';
+    b.classList.toggle('on', engineAuto);
+    if (engineAuto) analyzePosition(); else stopAnalysis();
+  });
   $('#mainFirst').addEventListener('click', () => $('#firstPly').click());
   $('#mainPrev').addEventListener('click', () => $('#prevPly').click());
-  $('#mainPlay').addEventListener('click', () => $('#replayLine').click());
+  $('#mainPlay').addEventListener('click', mainPlayToggle);
   $('#mainNext').addEventListener('click', () => $('#nextPly').click());
   $('#mainLast').addEventListener('click', () => $('#lastPly').click());
   let activeBoard = 'main';
@@ -1593,6 +1626,7 @@ function renderSectionViewer(group) {
         <div class="kv-comment"><span>${last ? `Jugada ${Math.ceil((st.ply + (blackFirst ? 1 : 0)) / 2)}. ${last.san}` : (group === 'partida' ? 'Partida famosa' : 'Ejercicio ' + st.key)}</span><p>${p.question || p.note || ''}</p></div>
         <details class="kv-sol"><summary>${label}</summary><p>${p.solution || ''}</p></details>
         <div class="kv-notation">${notation || '<em>Sin jugadas: analiza la posición en el tablero.</em>'}</div>
+        <div class="kv-engine"><div class="kv-engine-head"><span>Módulo de análisis</span><button class="kv-eng-toggle ${st.eng ? 'on' : ''}" data-eng>${st.eng ? 'Activado' : 'Desactivado'}</button></div><div class="kv-eng-out">${st.eng ? 'Analizando…' : 'Motor apagado.'}</div></div>
         <button class="kv-open" data-open="${st.key}">♟ Abrir en el tablero de análisis</button>
       </div>
     </div>`;
@@ -1608,6 +1642,19 @@ function renderSectionViewer(group) {
     else { st.pick = null; st.msg = 'No es la jugada. ¡Inténtalo de nuevo!'; }
     renderSectionViewer(group);
   }));
+  host.querySelector('[data-eng]').addEventListener('click', () => { st.eng = !st.eng; renderSectionViewer(group); });
+  if (st.eng) {
+    const out = host.querySelector('.kv-eng-out'); const reqFen = fen;
+    fetch(`https://lichess.org/api/cloud-eval?fen=${encodeURIComponent(reqFen)}&multiPv=1`).then(r => r.ok ? r.json() : null).then(d => {
+      if (!out.isConnected) return;
+      const pv = d && d.pvs && d.pvs[0];
+      if (!pv) { out.textContent = 'Sin evaluación disponible para esta posición.'; return; }
+      const score = pv.mate != null ? `M${pv.mate}` : ((pv.cp > 0 ? '+' : '') + (pv.cp / 100).toFixed(2));
+      const c = new Chess(reqFen); const san = [];
+      for (const u of pv.moves.split(' ').slice(0, 6)) { try { const m = c.move({ from: u.slice(0,2), to: u.slice(2,4), promotion: u[4] || 'q' }); if (!m) break; san.push(m.san); } catch { break; } }
+      out.innerHTML = `<b class="kv-eng-score">${score}</b><span>Mejor línea: ${san.join(' ')}</span>`;
+    }).catch(() => { if (out.isConnected) out.textContent = 'No se pudo consultar el motor.'; });
+  }
   host.querySelector('.kv-open').addEventListener('click', () => loadPosition(st.key, true));
   host.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => {
     const a = b.dataset.nav;
