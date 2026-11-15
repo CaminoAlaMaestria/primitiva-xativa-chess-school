@@ -1003,6 +1003,8 @@ function renderExtraSections() {
   };
   fill('#exerciseList', 'ejercicio');
   fill('#famousList', 'partida');
+  renderSectionViewer('ejercicio');
+  renderSectionViewer('partida');
   $$('.extra-load').forEach(b => b.addEventListener('click', () => loadPosition(b.dataset.extra, true)));
 }
 
@@ -1501,3 +1503,81 @@ async function syncCloudPositions() {
     loadPosition(activePosition);
   } catch (error) { console.error('No se pudieron cargar las posiciones de la nube:', error); }
 }
+
+
+// Visor estilo Kárpov para Ejercicios y Partidas famosas (no modifica los datos guardados).
+const sectionState = { ejercicio: { key: null, ply: 0 }, partida: { key: null, ply: 0 } };
+function sectionMoves(p) {
+  const out = [];
+  try {
+    const g = new Chess(p.fen);
+    const raw = Array.isArray(p.moves) && p.moves.length ? p.moves.map(m => m && m.uci) : (p.line || []);
+    for (const u of raw) {
+      if (typeof u !== 'string') break;
+      const mv = g.move({ from: u.slice(0,2), to: u.slice(2,4), promotion: u[4] || 'q' });
+      if (!mv) break;
+      out.push({ san: mv.san, from: mv.from, to: mv.to, fen: g.fen() });
+    }
+  } catch { /* línea no válida */ }
+  return out;
+}
+function renderSectionViewer(group) {
+  const host = $(group === 'partida' ? '#famousViewer' : '#exerciseViewer');
+  if (!host) return;
+  const entries = Object.entries(positions).filter(([, p]) => p.group === group);
+  if (!entries.length) { host.innerHTML = ''; return; }
+  const st = sectionState[group];
+  if (!st.key || !positions[st.key]) { st.key = entries[0][0]; st.ply = 0; }
+  const p = positions[st.key];
+  const moves = sectionMoves(p);
+  st.ply = Math.max(0, Math.min(st.ply, moves.length));
+  const fen = st.ply ? moves[st.ply - 1].fen : p.fen;
+  const last = st.ply ? moves[st.ply - 1] : null;
+  let g; try { g = new Chess(fen); } catch { return; }
+  const rows = g.board();
+  let sq = '';
+  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+    const name = 'abcdefgh'[c] + (8 - r);
+    const pc = rows[r][c];
+    const light = (r + c) % 2 === 0;
+    const hl = last && (name === last.from || name === last.to);
+    sq += `<div class="kv-sq ${light ? 'l' : 'd'} ${hl ? 'hl' : ''}">${c === 0 ? `<i class="kv-rank">${8 - r}</i>` : ''}${r === 7 ? `<i class="kv-file">${'abcdefgh'[c]}</i>` : ''}${pc ? `<img src="${pieceImage(pc)}" alt="" draggable="false">` : ''}</div>`;
+  }
+  const startNo = Number(p.fen.split(' ')[5]) || 1;
+  const blackFirst = p.fen.split(' ')[1] === 'b';
+  let notation = '';
+  moves.forEach((m, i) => {
+    const idx = i + (blackFirst ? 1 : 0);
+    if (idx % 2 === 0) notation += `<span class="kv-no">${startNo + idx / 2}.</span>`;
+    else if (i === 0) notation += `<span class="kv-no">${startNo}...</span>`;
+    notation += `<button class="kv-mv ${i + 1 === st.ply ? 'on' : ''}" data-ply="${i + 1}">${m.san}</button>`;
+  });
+  const label = group === 'partida' ? 'Idea clave' : 'Solución';
+  host.innerHTML = `
+    <div class="kv-tabs">${entries.map(([k, x]) => `<button class="kv-tab ${k === st.key ? 'on' : ''}" data-key="${k}"><b>${x.title}</b><small>${x.subtitle || k}</small></button>`).join('')}</div>
+    <div class="kv-grid">
+      <div class="kv-left">
+        <div class="kv-board">${sq}</div>
+        <div class="kv-nav">
+          <button data-nav="first" aria-label="Inicio">⏮</button><button data-nav="prev" aria-label="Anterior">◀</button><button data-nav="play" aria-label="Reproducir">▷</button><button data-nav="next" aria-label="Siguiente">▶</button><button data-nav="last" aria-label="Final">⏭</button>
+        </div>
+      </div>
+      <div class="kv-right">
+        <div class="kv-comment"><span>${last ? `Jugada ${Math.ceil((st.ply + (blackFirst ? 1 : 0)) / 2)}. ${last.san}` : (group === 'partida' ? 'Partida famosa' : 'Ejercicio ' + st.key)}</span><p>${p.question || p.note || ''}</p></div>
+        <details class="kv-sol"><summary>${label}</summary><p>${p.solution || ''}</p></details>
+        <div class="kv-notation">${notation || '<em>Sin jugadas: analiza la posición en el tablero.</em>'}</div>
+        <button class="kv-open" data-open="${st.key}">♟ Abrir en el tablero de análisis</button>
+      </div>
+    </div>`;
+  host.querySelectorAll('.kv-tab').forEach(b => b.addEventListener('click', () => { stopSectionPlay(group); st.key = b.dataset.key; st.ply = 0; renderSectionViewer(group); }));
+  host.querySelectorAll('.kv-mv').forEach(b => b.addEventListener('click', () => { stopSectionPlay(group); st.ply = Number(b.dataset.ply); renderSectionViewer(group); }));
+  host.querySelector('.kv-open').addEventListener('click', () => loadPosition(st.key, true));
+  host.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => {
+    const a = b.dataset.nav;
+    if (a === 'play') { if (st.timer) stopSectionPlay(group); else { if (st.ply >= moves.length) st.ply = 0; st.timer = setInterval(() => { if (st.ply >= sectionMoves(positions[st.key]).length) return stopSectionPlay(group); st.ply++; renderSectionViewer(group); }, 900); } return; }
+    stopSectionPlay(group);
+    st.ply = a === 'first' ? 0 : a === 'last' ? moves.length : a === 'prev' ? st.ply - 1 : st.ply + 1;
+    renderSectionViewer(group);
+  }));
+}
+function stopSectionPlay(group) { const st = sectionState[group]; if (st.timer) { clearInterval(st.timer); st.timer = null; } }
