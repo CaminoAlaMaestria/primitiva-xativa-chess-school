@@ -37,6 +37,20 @@ export function GameViewer({ game }: { game: Game }) {
     return () => clearTimeout(t);
   }, [auto, ply, max]);
 
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const t = e.target as HTMLElement | null;
+      if (t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName))) return;
+      if (e.key === "ArrowRight") setPly((p) => Math.min(max, p + 1));
+      else if (e.key === "ArrowLeft") setPly((p) => Math.max(0, p - 1));
+      else if (e.key === "ArrowUp" || e.key === "Home") setPly(0);
+      else if (e.key === "ArrowDown" || e.key === "End") setPly(max);
+      else return;
+      e.preventDefault();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [max]);
   const { board, last, fen } = positions[Math.min(ply, max)]!;
   let note = game.intro;
   for (let i = ply; i > 0; i--) if (game.notes[i]) { note = game.notes[i]!; break; }

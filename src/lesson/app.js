@@ -1464,7 +1464,32 @@ function initializeEvents() {
   });
   $('#restoreText').addEventListener('click', restoreCurrentText);
 
+  $('#mainFirst').addEventListener('click', () => $('#firstPly').click());
+  $('#mainPrev').addEventListener('click', () => $('#prevPly').click());
+  $('#mainPlay').addEventListener('click', () => $('#replayLine').click());
+  $('#mainNext').addEventListener('click', () => $('#nextPly').click());
+  $('#mainLast').addEventListener('click', () => $('#lastPly').click());
+  let activeBoard = 'main';
+  [['main', '.board-panel'], ['ejercicio', '#exerciseViewer'], ['partida', '#famousViewer']].forEach(([k, sel]) => {
+    const el = $(sel); if (!el) return;
+    el.addEventListener('pointerdown', () => { activeBoard = k; });
+    el.addEventListener('pointerenter', () => { activeBoard = k; });
+  });
   document.addEventListener('keydown', event => {
+    const t = event.target;
+    const typing = t && (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName));
+    const map = { ArrowLeft: 'prev', ArrowRight: 'next', ArrowUp: 'first', ArrowDown: 'last', Home: 'first', End: 'last' };
+    if (!typing && map[event.key]) {
+      event.preventDefault();
+      const a = map[event.key];
+      if (activeBoard === 'main') {
+        ({ prev: '#prevPly', next: '#nextPly', first: '#firstPly', last: '#lastPly' })[a] && $(({ prev: '#prevPly', next: '#nextPly', first: '#firstPly', last: '#lastPly' })[a]).click();
+      } else {
+        const host = $(activeBoard === 'partida' ? '#famousViewer' : '#exerciseViewer');
+        host?.querySelector(`[data-nav="${a}"]`)?.click();
+      }
+      return;
+    }
     if (event.key === 'Escape') {
       closeSources();
       closeDrawers();
