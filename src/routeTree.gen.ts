@@ -10,33 +10,53 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as KarpovRouteImport } from './routes/karpov'
+import { Route as PeonesBajoPresionRouteImport } from './routes/peones-bajo-presion'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const KarpovRoute = KarpovRouteImport.update({
+  id: '/karpov',
+  path: '/karpov',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PeonesBajoPresionRoute = PeonesBajoPresionRouteImport.update({
+  id: '/peones-bajo-presion',
+  path: '/peones-bajo-presion',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/karpov': typeof KarpovRoute
+  '/peones-bajo-presion': typeof PeonesBajoPresionRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/karpov': typeof KarpovRoute
+  '/peones-bajo-presion': typeof PeonesBajoPresionRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/karpov': typeof KarpovRoute
+  '/peones-bajo-presion': typeof PeonesBajoPresionRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/karpov' | '/peones-bajo-presion'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/karpov' | '/peones-bajo-presion'
+  id: '__root__' | '/' | '/karpov' | '/peones-bajo-presion'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  KarpovRoute: typeof KarpovRoute
+  PeonesBajoPresionRoute: typeof PeonesBajoPresionRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +68,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/karpov': {
+      id: '/karpov'
+      path: '/karpov'
+      fullPath: '/karpov'
+      preLoaderRoute: typeof KarpovRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/peones-bajo-presion': {
+      id: '/peones-bajo-presion'
+      path: '/peones-bajo-presion'
+      fullPath: '/peones-bajo-presion'
+      preLoaderRoute: typeof PeonesBajoPresionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  KarpovRoute: KarpovRoute,
+  PeonesBajoPresionRoute: PeonesBajoPresionRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
