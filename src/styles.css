@@ -168,6 +168,8 @@
   --font-mono: "IBM Plex Mono", monospace;
 }
 body { font-family: var(--font-serif); font-size: 1.125rem; }
+/* La ficha de clases avanzadas conserva su propia letra */
+body:has(#sourceImage) { font-family: inherit; font-size: 16px; }
 
 @media print {
   @page { size: A4; margin: 12mm; }
