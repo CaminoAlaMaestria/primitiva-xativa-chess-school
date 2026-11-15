@@ -24,7 +24,7 @@ export function LineVideo({ game, title, chapter }: { game: PgnGame; title: stri
 
   return (
     <div className="overflow-hidden rounded-xl border border-primary/50 bg-background shadow-2xl">
-      <div className="flex items-center justify-between border-b border-border bg-gradient-to-r from-wood to-card px-4 py-2">
+      <div className="flex items-center justify-between border-b border-border aula-bar px-4 py-2">
         <span className="font-display text-sm font-bold uppercase tracking-wider text-primary">{title}</span>
         <span className="text-xs text-muted-foreground">{chapter}</span>
       </div>

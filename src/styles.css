@@ -212,7 +212,7 @@ body:has(#sourceImage) { font-family: inherit; font-size: 16px; }
   --card-foreground: #0b2438;
   --popover: #ffffff;
   --popover-foreground: #0b2438;
-  --primary: #0f766e;
+  --primary: #071d2f;
   --primary-foreground: #ffffff;
   --secondary: #ddf3f0;
   --secondary-foreground: #071d2f;
@@ -234,3 +234,10 @@ body:has(#sourceImage) { font-family: inherit; font-size: 16px; }
 .aula-header h1 { color: #ffffff; }
 .aula-header .aula-kicker, .aula-header a, .aula-header svg { color: #00d4c7; }
 .aula-header .aula-intro { color: #e4f0f1; }
+
+/* Barras oscuras sin degradado: letras claras para proyector */
+.aula-bar { background: #071d2f; color: #ffffff; }
+.aula-bar, .aula-bar * { color: #ffffff; }
+.aula-bar svg, .aula-bar .text-primary { color: #00d4c7; }
+/* Botones blancos con texto azul marino, como en Peones bajo presión */
+button.bg-card, a.bg-card { background: #ffffff; color: #071d2f; }

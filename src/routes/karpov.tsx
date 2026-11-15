@@ -74,7 +74,7 @@ const STATS = [
 function Card({ n, title, icon: Icon, children, className = "" }: { n: number; title: string; icon: typeof Crown; children: React.ReactNode; className?: string }) {
   return (
     <section className={`overflow-hidden rounded-xl border border-border bg-card shadow-xl ${className}`}>
-      <header className="flex items-center gap-3 border-b border-border bg-gradient-to-r from-wood to-card px-5 py-3">
+      <header className="flex items-center gap-3 border-b border-border aula-bar px-5 py-3">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary font-display font-black text-primary-foreground">{n}</span>
         <h2 className="font-display text-lg font-bold uppercase tracking-wider text-primary">{title}</h2>
         <Icon className="ml-auto h-5 w-5 text-primary/70" />
@@ -89,7 +89,7 @@ function Index() {
   return (
     <main className="min-h-screen bg-background">
       <BackToPanel floating />
-      <header className="border-b-2 border-primary/60 bg-gradient-to-b from-wood/60 to-background px-6 py-14 text-center">
+      <header className="border-b-2 border-primary/60 bg-card px-6 py-14 text-center">
         <p className="font-display text-sm tracking-[0.4em] text-primary">Campeón del mundo · 1951 – Zlatoúst, URSS</p>
         <h1 className="mt-3 font-display text-5xl font-black uppercase tracking-wide text-primary sm:text-7xl">Anatoli Kárpov</h1>
         <p className="mt-3 text-2xl italic text-muted-foreground">La boa constrictor del tablero</p>
@@ -168,7 +168,7 @@ function Index() {
         </Card>
 
         <Card n={7} title="Cronología: desbloquea su carrera" icon={History}>
-          <div className="mb-5 rounded-lg border border-primary/40 bg-gradient-to-r from-wood/40 to-transparent px-4 py-3 text-sm">
+          <div className="mb-5 rounded-lg border border-primary/40 bg-secondary px-4 py-3 text-sm">
             <b className="font-display uppercase tracking-wider text-primary">Cómo funciona</b>
             <span className="text-muted-foreground"> — cada hito está cerrado con candado. Resuelve el acertijo de la partida de Kárpov de ese momento para abrir el siguiente.</span>
           </div>
@@ -176,7 +176,7 @@ function Index() {
         </Card>
 
         <Card n={8} title="Su legado al ajedrez" icon={Landmark} className="border-2 border-primary/80 shadow-[0_0_60px_-15px_var(--primary)]">
-          <div className="mb-5 rounded-lg border border-primary/40 bg-gradient-to-r from-wood/40 to-transparent px-4 py-3 text-sm">
+          <div className="mb-5 rounded-lg border border-primary/40 bg-secondary px-4 py-3 text-sm">
             <b className="font-display uppercase tracking-wider text-primary">Sección destacada</b>
             <span className="text-muted-foreground"> — lo que Kárpov dejó escrito en la historia del ajedrez.</span>
           </div>

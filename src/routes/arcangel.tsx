@@ -41,7 +41,7 @@ const STATS = [
 function Section({ n, title, icon: Icon, children }: { n: number | string; title: string; icon: typeof Crown; children: React.ReactNode }) {
   return (
     <section className="overflow-hidden rounded-xl border border-border bg-card shadow-xl">
-      <header className="flex items-center gap-3 border-b border-border bg-gradient-to-r from-wood to-card px-5 py-3">
+      <header className="flex items-center gap-3 border-b border-border aula-bar px-5 py-3">
         <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary font-display font-black text-primary-foreground">{n}</span>
         <h2 className="font-display text-lg font-bold uppercase tracking-wider text-primary">{title}</h2>
         <Icon className="ml-auto h-5 w-5 text-primary/70" />
@@ -91,7 +91,7 @@ function ArcangelPage() {
   const famous = useMemo(() => parseGame(CARUANA_CARLSEN), []);
   return (
     <main className="theme-projector min-h-screen bg-background">
-      <header className="border-b-2 border-primary/60 bg-gradient-to-b from-wood/60 to-background px-6 py-12 text-center">
+      <header className="border-b-2 border-primary/60 bg-card px-6 py-12 text-center">
         <BackToPanel />
         <p className="mt-4 font-display text-sm tracking-[0.4em] text-primary">Apertura Española · C78</p>
         <h1 className="mt-3 font-display text-4xl font-black uppercase tracking-wide text-primary sm:text-6xl">Variante Arcángel</h1>
@@ -143,7 +143,7 @@ function ArcangelPage() {
         </Section>
 
         <Section n={4} title="Partida famosa: Caruana – Carlsen" icon={Crown}>
-          <div className="mb-5 rounded-lg border border-primary/40 bg-gradient-to-r from-wood/40 to-transparent px-4 py-3 text-sm">
+          <div className="mb-5 rounded-lg border border-primary/40 bg-secondary px-4 py-3 text-sm">
             <b className="font-display uppercase tracking-wider text-primary">Isle of Man Masters 2017 · Ronda 8 · C78 · 0‑1</b>
             <span className="text-muted-foreground"> — Caruana probó la novedad 15.g4, pero Carlsen reorganizó sus piezas, rompió con 26...d5! y remató con 35...Af4.</span>
           </div>

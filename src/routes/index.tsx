@@ -36,7 +36,7 @@ function Index() {
             to={to}
             className="group flex flex-col overflow-hidden rounded-xl border border-border bg-card shadow-xl transition hover:-translate-y-1 hover:border-primary"
           >
-            <div className="flex items-center justify-between border-b border-border bg-gradient-to-r from-wood to-card px-5 py-3">
+            <div className="flex items-center justify-between border-b border-border aula-bar px-5 py-3">
               <span className="font-display text-2xl font-black text-primary">{n}</span>
               <Icon className="h-6 w-6 text-primary/80" />
             </div>
