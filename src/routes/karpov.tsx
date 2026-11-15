@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { BackToPanel } from "@/components/aula/Section";
 import { useState } from "react";
 import { Crown, Users, GraduationCap, Trophy, Swords, Star, Mic, Printer, Baby, Landmark, Grip, Crosshair, Castle, BookOpen, Medal, History } from "lucide-react";
 import { GameViewer, type Game } from "@/components/karpov/GameViewer";
@@ -12,6 +13,8 @@ export const Route = createFileRoute("/karpov")({
       { name: "description", content: "Infancia, maestros, títulos mundiales, la rivalidad con Kaspárov, Linares 1994 y partidas jugada a jugada." },
       { property: "og:title", content: "Anatoli Kárpov — Ficha interactiva" },
       { property: "og:description", content: "La vida y las partidas de Kárpov, con tablero interactivo y el contexto del podcast JAQUEa2." },
+      { property: "og:type", content: "article" },
+      { name: "twitter:card", content: "summary" },
     ],
   }),
   component: Index,
@@ -85,6 +88,7 @@ function Index() {
   const [g, setG] = useState(0);
   return (
     <main className="min-h-screen bg-background">
+      <BackToPanel floating />
       <header className="border-b-2 border-primary/60 bg-gradient-to-b from-wood/60 to-background px-6 py-14 text-center">
         <p className="font-display text-sm tracking-[0.4em] text-primary">Campeón del mundo · 1951 – Zlatoúst, URSS</p>
         <h1 className="mt-3 font-display text-5xl font-black uppercase tracking-wide text-primary sm:text-7xl">Anatoli Kárpov</h1>

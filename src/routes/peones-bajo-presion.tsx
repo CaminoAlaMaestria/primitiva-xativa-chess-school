@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { BackToPanel } from "@/components/aula/Section";
 import { useEffect } from "react";
 import lessonCss from "@/lesson/lesson.css?url";
 import bodyHtml from "@/lesson/body.html?raw";
@@ -25,5 +26,10 @@ function Lesson() {
       .then((m) => m.startLesson())
       .catch((e) => console.error("No se pudo cargar la clase:", e));
   }, []);
-  return <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />;
+  return (
+    <>
+      <BackToPanel floating />
+      <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+    </>
+  );
 }
