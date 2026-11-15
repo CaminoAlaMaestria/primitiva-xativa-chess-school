@@ -669,7 +669,26 @@ function colorFor(square) {
   return ((files.indexOf(square[0]) + Number(square[1])) % 2 === 1) ? 'dark' : 'light';
 }
 
+let mainEng = false, mainEngFen = '';
+function updateMainEngine(force) {
+  const out = document.getElementById('mainEngOut'), btn = document.getElementById('mainEngToggle');
+  if (!out || !btn) return;
+  btn.textContent = mainEng ? 'Activado' : 'Desactivado'; btn.classList.toggle('on', mainEng);
+  if (!mainEng) { out.textContent = 'Motor apagado.'; mainEngFen = ''; return; }
+  const reqFen = game.fen(); if (!force && reqFen === mainEngFen) return; mainEngFen = reqFen;
+  out.textContent = 'Analizando…';
+  fetch(`https://lichess.org/api/cloud-eval?fen=${encodeURIComponent(reqFen)}&multiPv=1`).then(r => r.ok ? r.json() : null).then(d => {
+    if (mainEngFen !== reqFen) return;
+    const pv = d && d.pvs && d.pvs[0];
+    if (!pv) { out.textContent = 'Sin evaluación disponible para esta posición.'; return; }
+    const score = pv.mate != null ? `M${pv.mate}` : ((pv.cp > 0 ? '+' : '') + (pv.cp / 100).toFixed(2));
+    const c = new Chess(reqFen); const san = [];
+    for (const u of pv.moves.split(' ').slice(0, 6)) { try { const m = c.move({ from: u.slice(0,2), to: u.slice(2,4), promotion: u[4] || 'q' }); if (!m) break; san.push(m.san); } catch { break; } }
+    out.innerHTML = `<b class="kv-eng-score">${score}</b><span>Mejor línea: ${san.join(' ')}</span>`;
+  }).catch(() => { if (mainEngFen === reqFen) out.textContent = 'No se pudo consultar el motor.'; });
+}
 function renderBoard() {
+  setTimeout(() => updateMainEngine(false), 0);
   const board = $('#chessboard');
   const history = game.history({ verbose: true });
   const lastMove = history.at(-1);
@@ -1500,6 +1519,7 @@ function initializeEvents() {
   $('#mainFirst').addEventListener('click', () => $('#firstPly').click());
   $('#mainPrev').addEventListener('click', () => $('#prevPly').click());
   $('#mainPlay').addEventListener('click', mainPlayToggle);
+  $('#mainEngToggle')?.addEventListener('click', () => { mainEng = !mainEng; updateMainEngine(true); });
   $('#mainNext').addEventListener('click', () => $('#nextPly').click());
   $('#mainLast').addEventListener('click', () => $('#lastPly').click());
   let activeBoard = 'main';
