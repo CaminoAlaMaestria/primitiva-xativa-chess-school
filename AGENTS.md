@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project structure
+- Each lesson sheet (ficha) is its own single-segment route (e.g. /karpov, /peones-bajo-presion) and section pages (/campeones, /apertura-espanola, /clases-avanzadas) list them; single-segment paths keep the lesson's relative `assets/...` URLs working.
+- Imported sheets are kept byte-for-byte from their source projects (src/components/karpov, src/lesson); only route wiring and the floating "Panel" back link are added.

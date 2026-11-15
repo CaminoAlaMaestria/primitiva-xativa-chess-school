@@ -1,0 +1,238 @@
+
+  <header class="topbar">
+    <a class="brand" href="#inicio" aria-label="Ir al inicio">
+      <span class="brand-mark" aria-hidden="true">♞</span>
+      <span><strong>AULA</strong><small>Ajedrez avanzado</small></span>
+    </a>
+    <div class="topbar-center">
+      <span class="eyebrow">NIVEL 3 · ESTRUCTURA DE PEONES</span>
+      <h1>Peones bajo presión</h1>
+    </div>
+    <div class="top-actions">
+      <a class="section-link" href="#ejercicios">Ejercicios</a>
+      <a class="section-link" href="#partidas">Partidas</a>
+      <span class="projector-badge"><span class="dot"></span>Modo proyector</span>
+      <button class="icon-button" id="openTextEditorBtn" title="Editar textos" aria-label="Editar textos">T✎</button>
+      <button class="icon-button" id="openSourceBtn" title="Ver material de referencia" aria-label="Ver material de referencia">▤</button>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero-strip" aria-label="Objetivo de la clase">
+      <div>
+        <span class="section-kicker">SECUENCIA DIDÁCTICA</span>
+        <p><strong>Calcula · reproduce · contrasta.</strong> Trabaja las posiciones del material, juega tus variantes y pon a prueba cada plan con Stockfish.</p>
+      </div>
+      <div class="hero-stats" aria-label="Características de la lección">
+        <span><b>4</b> páginas de referencia</span>
+        <span><b>9</b> diagramas preparados</span>
+        <span><b>SF 19</b> análisis local</span>
+      </div>
+    </section>
+
+    <section class="workspace">
+      <aside class="lesson-panel" aria-label="Guía didáctica">
+        <div class="lesson-nav" role="tablist" aria-label="Unidades de la lección">
+          <button class="lesson-tab active" data-unit="debilitar" role="tab" aria-selected="true"><span>01</span>Debilitar</button>
+          <button class="lesson-tab" data-unit="casos" role="tab" aria-selected="false"><span>02</span>Casos</button>
+          <button class="lesson-tab" data-unit="doblados" role="tab" aria-selected="false"><span>03</span>Doblados</button>
+          <button class="lesson-tab" data-unit="centro" role="tab" aria-selected="false"><span>04</span>Centro</button>
+        </div>
+
+        <article class="lesson-content" id="lessonContent"></article>
+
+        <div class="audio-box">
+          <div class="audio-heading"><span class="audio-icon" aria-hidden="true">◖))</span><div><b>Explicación en audio</b><small id="audioLabel">Unidad 01 · introducción</small></div></div>
+          <div class="audio-controls">
+            <button class="play-audio" id="playAudio" aria-label="Reproducir explicación">▶</button>
+            <audio id="lessonAudio" preload="metadata" controls></audio>
+          </div>
+        </div>
+
+        <div class="teacher-tip">
+          <span aria-hidden="true">✦</span>
+          <p><b>Clave para la clase.</b> Antes de encender el motor, pide un plan con tres elementos: <em>objetivo, casilla de entrada y cambio favorable</em>.</p>
+        </div>
+      </aside>
+
+      <section class="board-panel" aria-label="Tablero de análisis interactivo">
+        <div class="board-header">
+          <div>
+            <span class="section-kicker" id="positionKicker">DIAGRAMA A30 · PÁGINA 9</span>
+            <h2 id="positionName">La idea de Lasker</h2>
+          </div>
+          <div class="board-header-actions">
+            <button class="outline-button" id="openBoardEditorBtn">⚙ Editar tablero</button>
+            <button class="outline-button" id="flipBoard">↻ Girar</button>
+            <button class="solid-button" id="fullscreenBtn">⛶ Pantalla completa</button>
+          </div>
+        </div>
+
+        <div class="board-stage">
+          <div class="chessboard" id="chessboard" aria-label="Tablero de ajedrez interactivo. Selecciona una pieza y una casilla destino."></div>
+          <aside class="move-panel" aria-label="Control de reproducción">
+            <div class="turn-card">
+              <span class="turn-label">TURNO</span>
+              <b id="turnLabel">Blancas</b>
+              <small id="boardHint">Selecciona una pieza para ver sus destinos.</small>
+            </div>
+            <div class="control-grid">
+              <button class="control-button" id="resetBoard" title="Restablecer posición">↺<span>Reiniciar</span></button>
+              <button class="control-button" id="undoMove" title="Deshacer jugada">←<span>Deshacer</span></button>
+              <button class="control-button accent" id="replayLine" title="Reproducir línea de aula">▷<span>Reproducir</span></button>
+            </div>
+            <div class="move-log-wrap">
+              <div class="move-log-title"><span>JUGADAS</span><button id="clearLog" title="Limpiar jugadas">Limpiar</button></div>
+              <ol id="moveLog" class="move-log" aria-live="polite"><li class="empty-moves">Aún no hay jugadas.</li></ol>
+              <div class="ply-nav" aria-label="Navegar jugadas"><button id="firstPly" title="Inicio">⇤</button><button id="prevPly" title="Anterior">◀</button><button id="nextPly" title="Siguiente">▶</button><button id="lastPly" title="Final">⇥</button></div>
+              <div class="nag-bar" aria-label="Valorar jugada"><button class="nag-button" data-nag="!" title="Buena">!</button><button class="nag-button" data-nag="!!" title="Brillante">!!</button><button class="nag-button" data-nag="?" title="Mala">?</button><button class="nag-button" data-nag="??" title="Error grave">??</button><button class="nag-button" data-nag="!?" title="Interesante">!?</button><button class="nag-button" data-nag="?!" title="Dudosa">?!</button></div>
+              <button class="save-moves" id="saveMoves">Guardar partida</button>
+              <small id="movesStatus" class="moves-status"></small>
+            </div>
+          </aside>
+        </div>
+
+        <div class="position-note" id="positionNote"></div>
+
+        <div class="diagram-row" aria-label="Selector de diagramas">
+          <div class="diagram-row-label">POSICIONES DEL MATERIAL <span>elige una</span></div>
+          <div class="diagram-list" id="diagramList"></div>
+        </div>
+      </section>
+    </section>
+
+    <section class="analysis-section" aria-label="Análisis con Stockfish">
+      <div class="engine-intro">
+        <span class="engine-badge"><i class="dot" id="engineDot"></i><span id="engineStatus">Cargando Stockfish 19…</span></span>
+        <h2>Contrasta tu cálculo con el motor</h2>
+        <p>El análisis se ejecuta en este navegador. Mueve primero las piezas y pide una lectura breve de la posición cuando hayas formulado una hipótesis.</p>
+      </div>
+      <div class="engine-controls">
+        <label for="depthRange">Profundidad <b id="depthValue">12</b></label>
+        <input id="depthRange" type="range" min="8" max="18" step="1" value="12" />
+        <button class="analyze-button" id="analyzeBtn"><span>✦</span> Analizar posición</button>
+        <button class="stop-button" id="stopBtn" disabled>Detener</button>
+      </div>
+      <div class="engine-output" id="engineOutput" aria-live="polite">
+        <div class="engine-empty"><span>♞</span><p>El motor mostrará aquí evaluación, mejor línea y profundidad.</p></div>
+      </div>
+      <p class="engine-footnote">Stockfish 19 Lite · WASM · un solo hilo. La evaluación es una ayuda para debatir el plan, no un sustituto de la explicación.</p>
+    </section>
+
+    <section class="structure-section" aria-label="Mapa de conceptos">
+      <div class="structure-head">
+        <span class="section-kicker">MAPA DE LA LECCIÓN</span>
+        <h2>De la estructura al plan</h2>
+      </div>
+      <div class="concept-grid">
+        <article><span class="concept-number">01</span><h3>Provocar</h3><p>Un avance puede fijar una casilla débil o dejar al peón sin el apoyo de su cadena.</p></article>
+        <article><span class="concept-number">02</span><h3>Doblar</h3><p>El daño no es solo visual: mira las casillas debilitadas y las columnas que se abren.</p></article>
+        <article><span class="concept-number">03</span><h3>Bloquear</h3><p>Una debilidad se vuelve real cuando una pieza puede ocupar delante la casilla de bloqueo.</p></article>
+        <article><span class="concept-number">04</span><h3>Atacar</h3><p>Coordina torres, cambios y una segunda debilidad antes de recoger el peón objetivo.</p></article>
+      </div>
+    </section>
+    <section class="extra-section" id="ejercicios" aria-label="Ejercicios">
+      <div class="structure-head">
+        <span class="section-kicker">EJERCICIOS 3 · NIVEL AVANZADO</span>
+        <h2>Ponte a prueba</h2>
+      </div>
+      <div class="theory-grid">
+        <article><b>1.</b> ¿Cuál es la disposición más sólida en la formación de peones? ¿Por qué?<details><summary>Ver solución</summary><p>En línea, especialmente en la segunda (séptima) fila, porque pueden defenderse unos a otros y disponen del doble movimiento inicial.</p></details></article>
+        <article><b>2.</b> ¿Cuáles son las dos ideas fundamentales para debilitar la estructura de peones enemiga?<details><summary>Ver solución</summary><p>Provocar el alejamiento de su campo y la ruptura de su formación.</p></details></article>
+      </div>
+      <div class="extra-grid" id="exerciseList"></div>
+    </section>
+
+    <section class="extra-section" id="partidas" aria-label="Partidas famosas">
+      <div class="structure-head">
+        <span class="section-kicker">PARTIDAS FAMOSAS</span>
+        <h2>Los cuatro conceptos en la práctica</h2>
+      </div>
+      <div class="extra-grid" id="famousList"></div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Ficha interactiva elaborada a partir del material aportado · páginas 9–12</span>
+    <span>Tablero y piezas: tema Merida · Motor: Stockfish 19</span>
+  </footer>
+
+  <aside class="editor-drawer" id="boardEditor" aria-hidden="true" aria-label="Editor de tablero">
+    <div class="drawer-header"><div><span class="section-kicker">EDICIÓN</span><h2>Tablero y posición</h2></div><button class="icon-button" id="closeBoardEditorBtn" aria-label="Cerrar editor de tablero">×</button></div>
+    <div class="drawer-scroll">
+      <section class="drawer-section">
+        <div class="drawer-section-head"><span>APARIENCIA</span><button class="tiny-reset" id="resetBoardStyle">Restaurar</button></div>
+        <label class="field-label" for="pieceTheme">Juego de piezas</label>
+        <select class="editor-select" id="pieceTheme"><option value="merida">Merida · clásico</option><option value="cburnett">Cburnett · torneo</option><option value="alpha">Alpha · minimalista</option></select>
+        <div class="color-grid">
+          <label>Casillas claras<input type="color" id="lightSquareColor" value="#f5eacc" /></label>
+          <label>Casillas oscuras<input type="color" id="darkSquareColor" value="#92c4b7" /></label>
+        </div>
+        <div class="preset-row" aria-label="Paletas de tablero"><button data-preset="projector">Proyector</button><button data-preset="wood">Madera</button><button data-preset="slate">Pizarra</button></div>
+      </section>
+
+      <section class="drawer-section position-editor">
+        <div class="drawer-section-head"><span>POSICIÓN</span><span class="mode-chip" id="editModeStatus">Modo juego</span></div>
+        <p class="drawer-help">Elige una pieza y haz clic en una casilla. Pulsar de nuevo con la misma pieza la quita.</p>
+        <div class="editor-action-row"><button class="editor-action" id="togglePositionEdit">✎ Editar piezas</button></div>
+        <div class="piece-palette" id="piecePalette" aria-label="Paleta de piezas"></div>
+        <div class="editor-action-row"><button class="editor-action" id="eraseTool">⌫ Borrar</button></div>
+        <label class="field-label" for="editorTurn">Turno</label>
+        <select class="editor-select" id="editorTurn"><option value="w">Juegan blancas</option><option value="b">Juegan negras</option></select>
+        <div class="castle-grid">
+          <label><input type="checkbox" id="castleK" /> B O-O</label>
+          <label><input type="checkbox" id="castleQ" /> B O-O-O</label>
+          <label><input type="checkbox" id="castlek" /> N O-O</label>
+          <label><input type="checkbox" id="castleq" /> N O-O-O</label>
+        </div>
+        <label class="field-label" for="editorEp">Al paso</label>
+        <input class="editor-select" id="editorEp" value="-" maxlength="2" />
+        <div class="editor-action-row"><button class="editor-action" id="startPosition">Posición inicial</button><button class="editor-action danger" id="emptyBoard">Vaciar</button><button class="editor-action" id="editorFlip">Girar</button></div>
+        <label class="field-label" for="fenEditor">FEN de la posición</label>
+        <textarea id="fenEditor" rows="3" spellcheck="false" aria-label="Notación FEN de la posición"></textarea>
+        <p class="drawer-status invalid" id="fenValidity" hidden></p>
+        <div class="editor-action-row"><button class="editor-action" id="applyFen">Aplicar FEN</button><button class="editor-action" id="copyFen">Copiar FEN</button></div>
+        <div class="editor-action-row save-row"><button class="save-button" id="savePosition">Guardar este diagrama</button><button class="editor-action" id="restorePosition">Restaurar transcripción</button></div>
+        <p class="drawer-status" id="positionEditorStatus">Los cambios se aplican al tablero actual.</p>
+      </section>
+    </div>
+  </aside>
+
+  <aside class="editor-drawer text-drawer" id="textEditor" aria-hidden="true" aria-label="Editor de texto">
+    <div class="drawer-header"><div><span class="section-kicker">EDICIÓN</span><h2>Textos de la ficha</h2></div><button class="icon-button" id="closeTextEditorBtn" aria-label="Cerrar editor de texto">×</button></div>
+    <div class="drawer-scroll">
+      <section class="drawer-section">
+        <p class="drawer-help">Activa el modo edición, pulsa dentro de un bloque de la explicación y escribe. Los cambios se guardan en este navegador.</p>
+        <button class="save-button" id="toggleTextEdit">✎ Activar edición de texto</button>
+        <div class="text-editor-status" id="textEditorStatus">Modo lectura</div>
+      </section>
+      <section class="drawer-section">
+        <div class="drawer-section-head"><span>FORMATO</span><span>selección o bloque</span></div>
+        <label class="field-label" for="textTarget">Aplicar a</label>
+        <select class="editor-select" id="textTarget"><option value="selection">Texto seleccionado</option><option value="title">Título de la unidad</option><option value="intro">Párrafo de introducción</option><option value="question">Reto para el grupo</option><option value="points">Puntos clave</option></select>
+        <div class="format-grid">
+          <label class="field-label">Color<input type="color" id="textColor" value="#0b2438" /></label>
+          <label class="field-label">Tamaño <output id="textSizeLabel">18 px</output><input type="range" id="textSize" min="12" max="42" value="18" /></label>
+        </div>
+        <label class="field-label" for="fontFamily">Tipografía</label>
+        <select class="editor-select" id="fontFamily"><option value="Inter, Arial, sans-serif">Sans moderna</option><option value="Georgia, serif">Serif editorial</option><option value="Verdana, sans-serif">Verdana · proyector</option><option value="Courier New, monospace">Monoespaciada</option></select>
+        <div class="format-actions"><button class="format-button" id="textBold" title="Negrita"><b>B</b></button><button class="format-button" id="resetTextFormat">Restaurar formato del bloque</button></div>
+      </section>
+      <section class="drawer-section">
+        <div class="drawer-section-head"><span>GUARDADO</span></div>
+        <div class="editor-action-row save-row"><button class="save-button" id="saveText">Guardar textos</button><button class="editor-action" id="restoreText">Restaurar unidad</button></div>
+        <p class="drawer-status" id="textSaveStatus">Puedes conservar versiones personalizadas de cada unidad.</p>
+      </section>
+    </div>
+  </aside>
+  <div class="drawer-backdrop" id="drawerBackdrop"></div>
+
+  <div class="modal" id="sourceModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Material de referencia">
+    <div class="modal-card">
+      <div class="modal-header"><div><span class="section-kicker">MATERIAL DE REFERENCIA</span><h2 id="sourceTitle">Página 9</h2></div><button class="icon-button close-modal" id="closeSourceBtn" aria-label="Cerrar">×</button></div>
+      <img id="sourceImage" src="assets/pdf-pages/page-1.png" alt="Página escaneada del material de ajedrez" />
+      <div class="modal-footer"><button class="outline-button" id="prevSource">← Anterior</button><span id="sourceCounter">1 / 4</span><button class="outline-button" id="nextSource">Siguiente →</button></div>
+    </div>
+  </div>
+
+  
