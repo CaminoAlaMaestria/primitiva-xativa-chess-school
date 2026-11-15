@@ -1531,7 +1531,7 @@ async function syncCloudPositions() {
 
 
 // Visor estilo Kárpov para Ejercicios y Partidas famosas (no modifica los datos guardados).
-const sectionState = { ejercicio: { key: null, ply: 0 }, partida: { key: null, ply: 0 } };
+const sectionState = { ejercicio: { key: null, ply: 0, solved: {}, pick: null, msg: '' }, partida: { key: null, ply: 0 } };
 function sectionMoves(p) {
   const out = [];
   try {
@@ -1565,8 +1565,8 @@ function renderSectionViewer(group) {
     const name = 'abcdefgh'[c] + (8 - r);
     const pc = rows[r][c];
     const light = (r + c) % 2 === 0;
-    const hl = last && (name === last.from || name === last.to);
-    sq += `<div class="kv-sq ${light ? 'l' : 'd'} ${hl ? 'hl' : ''}">${c === 0 ? `<i class="kv-rank">${8 - r}</i>` : ''}${r === 7 ? `<i class="kv-file">${'abcdefgh'[c]}</i>` : ''}${pc ? `<img src="${pieceImage(pc)}" alt="" draggable="false">` : ''}</div>`;
+    const hl = (last && (name === last.from || name === last.to)) || st.pick === name;
+    sq += `<div data-sq="${name}" class="kv-sq ${light ? 'l' : 'd'} ${hl ? 'hl' : ''}">${c === 0 ? `<i class="kv-rank">${8 - r}</i>` : ''}${r === 7 ? `<i class="kv-file">${'abcdefgh'[c]}</i>` : ''}${pc ? `<img src="${pieceImage(pc)}" alt="" draggable="false">` : ''}</div>`;
   }
   const startNo = Number(p.fen.split(' ')[5]) || 1;
   const blackFirst = p.fen.split(' ')[1] === 'b';
@@ -1577,6 +1577,8 @@ function renderSectionViewer(group) {
     else if (i === 0) notation += `<span class="kv-no">${startNo}...</span>`;
     notation += `<button class="kv-mv ${i + 1 === st.ply ? 'on' : ''}" data-ply="${i + 1}">${m.san}</button>`;
   });
+  const solved = group !== 'ejercicio' || !moves.length || st.solved[st.key];
+  if (!solved) notation = `<em>${st.msg || 'Haz la primera jugada en el tablero para ver las jugadas.'}</em>`;
   const label = group === 'partida' ? 'Idea clave' : 'Solución';
   host.innerHTML = `
     <div class="kv-tabs">${entries.map(([k, x]) => `<button class="kv-tab ${k === st.key ? 'on' : ''}" data-key="${k}"><b>${x.title}</b><small>${x.subtitle || k}</small></button>`).join('')}</div>
@@ -1594,8 +1596,18 @@ function renderSectionViewer(group) {
         <button class="kv-open" data-open="${st.key}">♟ Abrir en el tablero de análisis</button>
       </div>
     </div>`;
-  host.querySelectorAll('.kv-tab').forEach(b => b.addEventListener('click', () => { stopSectionPlay(group); st.key = b.dataset.key; st.ply = 0; renderSectionViewer(group); }));
+  host.querySelectorAll('.kv-tab').forEach(b => b.addEventListener('click', () => { stopSectionPlay(group); st.key = b.dataset.key; st.ply = 0; st.pick = null; st.msg = ''; renderSectionViewer(group); }));
   host.querySelectorAll('.kv-mv').forEach(b => b.addEventListener('click', () => { stopSectionPlay(group); st.ply = Number(b.dataset.ply); renderSectionViewer(group); }));
+  if (!solved) host.querySelectorAll('.kv-sq').forEach(d => d.addEventListener('click', () => {
+    if (st.ply !== 0) { st.ply = 0; }
+    const name = d.dataset.sq, m0 = moves[0];
+    if (!st.pick) { if (d.querySelector('img')) { st.pick = name; st.msg = ''; renderSectionViewer(group); } return; }
+    if (st.pick === name) { st.pick = null; renderSectionViewer(group); return; }
+    if (st.pick === m0.from && name === m0.to) { st.solved[st.key] = true; st.pick = null; st.msg = ''; st.ply = 1; }
+    else if (d.querySelector('img') && !(st.pick && name === m0.to)) { st.pick = name; }
+    else { st.pick = null; st.msg = 'No es la jugada. ¡Inténtalo de nuevo!'; }
+    renderSectionViewer(group);
+  }));
   host.querySelector('.kv-open').addEventListener('click', () => loadPosition(st.key, true));
   host.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => {
     const a = b.dataset.nav;
