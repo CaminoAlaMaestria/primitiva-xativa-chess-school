@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { Chess, type Square } from "chess.js";
 import { Lock, Check, Lightbulb, Eye, ArrowRight, RotateCcw } from "lucide-react";
 
-type Milestone = {
+export type Milestone = {
   year: string;
   title: string;
   text: string;
@@ -187,7 +187,7 @@ function QuizCard({ m, onSolved }: { m: Milestone; onSolved: () => void }) {
 
 const FILES = "abcdefgh";
 
-function PuzzleBoard({ m, onSolved }: { m: Milestone; onSolved: () => void }) {
+export function PuzzleBoard({ m, onSolved }: { m: Milestone; onSolved: () => void }) {
   const chess = useMemo(() => {
     const c = new Chess();
     for (const mv of m.moves.split(" ")) c.move(mv);

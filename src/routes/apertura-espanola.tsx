@@ -1,6 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BookOpen } from "lucide-react";
-import { SectionPage } from "@/components/aula/Section";
+import { SectionPage, type Ficha } from "@/components/aula/Section";
+
+export const FICHAS: Ficha[] = [
+  { title: "Variante Arcángel", subtitle: "Estudio interactivo · C78 · 3 partidas y 8 ejercicios", to: "/arcangel" },
+];
 
 export const Route = createFileRoute("/apertura-espanola")({
   head: () => ({
@@ -19,7 +23,7 @@ export const Route = createFileRoute("/apertura-espanola")({
       title="Apertura Española"
       intro="1.e4 e5 2.Cf3 Cc6 3.Ab5 — variante a variante."
       icon={<BookOpen className="h-12 w-12" />}
-      fichas={[{ title: "Variante Arcángel", subtitle: "Ficha en preparación" }]}
+      fichas={FICHAS}
     />
   ),
 });

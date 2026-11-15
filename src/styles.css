@@ -177,3 +177,29 @@ body:has(#sourceImage) { font-family: inherit; font-size: 16px; }
   .rounded-lg.p-4 { break-inside: avoid; }
   audio, iframe { display: none !important; }
 }
+
+:root {
+  --mark-g: oklch(0.62 0.17 145);
+  --mark-r: oklch(0.6 0.2 25);
+  --mark-y: oklch(0.82 0.16 90);
+  --mark-b: oklch(0.6 0.15 250);
+}
+
+/* Tema claro de alto contraste para el dashboard Arcángel (visible en proyector) */
+.theme-projector {
+  color: var(--foreground);
+  --background: oklch(0.96 0.02 90);
+  --foreground: oklch(0.22 0.03 60);
+  --card: oklch(0.99 0.01 90);
+  --card-foreground: oklch(0.22 0.03 60);
+  --primary: oklch(0.42 0.11 65);
+  --primary-foreground: oklch(0.98 0.01 90);
+  --muted: oklch(0.9 0.03 85);
+  --muted-foreground: oklch(0.38 0.04 65);
+  --accent: oklch(0.5 0.15 30);
+  --accent-foreground: oklch(0.98 0.01 90);
+  --border: oklch(0.62 0.06 70);
+  --sq-light: oklch(0.9 0.05 85);
+  --sq-dark: oklch(0.55 0.09 55);
+  --wood: oklch(0.78 0.08 70);
+}

@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AperturaEspanolaRouteImport } from './routes/apertura-espanola'
+import { Route as ArcangelRouteImport } from './routes/arcangel'
 import { Route as CampeonesRouteImport } from './routes/campeones'
 import { Route as ClasesAvanzadasRouteImport } from './routes/clases-avanzadas'
 import { Route as KarpovRouteImport } from './routes/karpov'
@@ -24,6 +25,11 @@ const IndexRoute = IndexRouteImport.update({
 const AperturaEspanolaRoute = AperturaEspanolaRouteImport.update({
   id: '/apertura-espanola',
   path: '/apertura-espanola',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ArcangelRoute = ArcangelRouteImport.update({
+  id: '/arcangel',
+  path: '/arcangel',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CampeonesRoute = CampeonesRouteImport.update({
@@ -50,6 +56,7 @@ const PeonesBajoPresionRoute = PeonesBajoPresionRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/apertura-espanola': typeof AperturaEspanolaRoute
+  '/arcangel': typeof ArcangelRoute
   '/campeones': typeof CampeonesRoute
   '/clases-avanzadas': typeof ClasesAvanzadasRoute
   '/karpov': typeof KarpovRoute
@@ -58,6 +65,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/apertura-espanola': typeof AperturaEspanolaRoute
+  '/arcangel': typeof ArcangelRoute
   '/campeones': typeof CampeonesRoute
   '/clases-avanzadas': typeof ClasesAvanzadasRoute
   '/karpov': typeof KarpovRoute
@@ -67,6 +75,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/apertura-espanola': typeof AperturaEspanolaRoute
+  '/arcangel': typeof ArcangelRoute
   '/campeones': typeof CampeonesRoute
   '/clases-avanzadas': typeof ClasesAvanzadasRoute
   '/karpov': typeof KarpovRoute
@@ -77,6 +86,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/apertura-espanola'
+    | '/arcangel'
     | '/campeones'
     | '/clases-avanzadas'
     | '/karpov'
@@ -85,6 +95,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/apertura-espanola'
+    | '/arcangel'
     | '/campeones'
     | '/clases-avanzadas'
     | '/karpov'
@@ -93,6 +104,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/apertura-espanola'
+    | '/arcangel'
     | '/campeones'
     | '/clases-avanzadas'
     | '/karpov'
@@ -102,6 +114,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AperturaEspanolaRoute: typeof AperturaEspanolaRoute
+  ArcangelRoute: typeof ArcangelRoute
   CampeonesRoute: typeof CampeonesRoute
   ClasesAvanzadasRoute: typeof ClasesAvanzadasRoute
   KarpovRoute: typeof KarpovRoute
@@ -122,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/apertura-espanola'
       fullPath: '/apertura-espanola'
       preLoaderRoute: typeof AperturaEspanolaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/arcangel': {
+      id: '/arcangel'
+      path: '/arcangel'
+      fullPath: '/arcangel'
+      preLoaderRoute: typeof ArcangelRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/campeones': {
@@ -158,6 +178,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AperturaEspanolaRoute: AperturaEspanolaRoute,
+  ArcangelRoute: ArcangelRoute,
   CampeonesRoute: CampeonesRoute,
   ClasesAvanzadasRoute: ClasesAvanzadasRoute,
   KarpovRoute: KarpovRoute,
