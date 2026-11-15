@@ -398,3 +398,4 @@ footer { max-width: 1500px; padding: 25px clamp(18px, 4vw, 64px); margin: auto; 
 .kv-eng-toggle.on{background:#1f7a6d;border-color:#1f7a6d;color:#fff}
 .kv-eng-out{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.95rem}
 .kv-eng-score{font-size:1.3rem}
+.analysis-section{display:none !important}

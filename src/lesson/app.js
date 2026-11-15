@@ -1627,7 +1627,6 @@ function renderSectionViewer(group) {
         <details class="kv-sol"><summary>${label}</summary><p>${p.solution || ''}</p></details>
         <div class="kv-notation">${notation || '<em>Sin jugadas: analiza la posición en el tablero.</em>'}</div>
         <div class="kv-engine"><div class="kv-engine-head"><span>Módulo de análisis</span><button class="kv-eng-toggle ${st.eng ? 'on' : ''}" data-eng>${st.eng ? 'Activado' : 'Desactivado'}</button></div><div class="kv-eng-out">${st.eng ? 'Analizando…' : 'Motor apagado.'}</div></div>
-        <button class="kv-open" data-open="${st.key}">♟ Abrir en el tablero de análisis</button>
       </div>
     </div>`;
   host.querySelectorAll('.kv-tab').forEach(b => b.addEventListener('click', () => { stopSectionPlay(group); st.key = b.dataset.key; st.ply = 0; st.pick = null; st.msg = ''; renderSectionViewer(group); }));
@@ -1655,7 +1654,7 @@ function renderSectionViewer(group) {
       out.innerHTML = `<b class="kv-eng-score">${score}</b><span>Mejor línea: ${san.join(' ')}</span>`;
     }).catch(() => { if (out.isConnected) out.textContent = 'No se pudo consultar el motor.'; });
   }
-  host.querySelector('.kv-open').addEventListener('click', () => loadPosition(st.key, true));
+  host.querySelector(".kv-open")?.addEventListener("click", () => loadPosition(st.key, true));
   host.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => {
     const a = b.dataset.nav;
     if (a === 'play') { if (st.timer) stopSectionPlay(group); else { if (st.ply >= moves.length) st.ply = 0; st.timer = setInterval(() => { if (st.ply >= sectionMoves(positions[st.key]).length) return stopSectionPlay(group); st.ply++; renderSectionViewer(group); }, 900); } return; }
