@@ -69,7 +69,12 @@
         </div>
 
         <div class="board-stage">
+          <div class="board-col">
           <div class="chessboard" id="chessboard" aria-label="Tablero de ajedrez interactivo. Selecciona una pieza y una casilla destino."></div>
+        <div class="kv-nav main-nav" aria-label="Reproducción del tablero">
+          <button id="mainFirst" aria-label="Inicio">⏮</button><button id="mainPrev" aria-label="Anterior">◀</button><button id="mainPlay" aria-label="Reproducir">▷</button><button id="mainNext" aria-label="Siguiente">▶</button><button id="mainLast" aria-label="Final">⏭</button>
+        </div>
+          </div>
           <aside class="move-panel" aria-label="Control de reproducción">
             <div class="turn-card">
               <span class="turn-label">TURNO</span>
@@ -83,17 +88,14 @@
             </div>
             <div class="move-log-wrap">
               <div class="move-log-title"><span>JUGADAS</span><button id="clearLog" title="Limpiar jugadas">Limpiar</button></div>
+              <div class="nag-bar" aria-label="Valorar jugada"><button class="nag-button" data-nag="!" title="Buena">!</button><button class="nag-button" data-nag="!!" title="Brillante">!!</button><button class="nag-button" data-nag="?" title="Mala">?</button><button class="nag-button" data-nag="??" title="Error grave">??</button><button class="nag-button" data-nag="!?" title="Interesante">!?</button><button class="nag-button" data-nag="?!" title="Dudosa">?!</button></div>
               <ol id="moveLog" class="move-log" aria-live="polite"><li class="empty-moves">Aún no hay jugadas.</li></ol>
               <div class="ply-nav" aria-label="Navegar jugadas"><button id="firstPly" title="Inicio">⇤</button><button id="prevPly" title="Anterior">◀</button><button id="nextPly" title="Siguiente">▶</button><button id="lastPly" title="Final">⇥</button></div>
-              <div class="nag-bar" aria-label="Valorar jugada"><button class="nag-button" data-nag="!" title="Buena">!</button><button class="nag-button" data-nag="!!" title="Brillante">!!</button><button class="nag-button" data-nag="?" title="Mala">?</button><button class="nag-button" data-nag="??" title="Error grave">??</button><button class="nag-button" data-nag="!?" title="Interesante">!?</button><button class="nag-button" data-nag="?!" title="Dudosa">?!</button></div>
               <button class="save-moves" id="saveMoves">Guardar partida</button>
               <small id="movesStatus" class="moves-status"></small>
             </div>
             <div class="kv-engine main-engine"><div class="kv-engine-head"><span>Módulo de análisis</span><button class="kv-eng-toggle" id="mainEngToggle">Desactivado</button></div><div class="kv-eng-out" id="mainEngOut">Motor apagado.</div></div>
           </aside>
-        </div>
-        <div class="kv-nav main-nav" aria-label="Reproducción del tablero">
-          <button id="mainFirst" aria-label="Inicio">⏮</button><button id="mainPrev" aria-label="Anterior">◀</button><button id="mainPlay" aria-label="Reproducir">▷</button><button id="mainNext" aria-label="Siguiente">▶</button><button id="mainLast" aria-label="Final">⏭</button>
         </div>
 
         <div class="position-note" id="positionNote"></div>
@@ -146,7 +148,7 @@
         <article><b>2.</b> ¿Cuáles son las dos ideas fundamentales para debilitar la estructura de peones enemiga?<details><summary>Ver solución</summary><p>Provocar el alejamiento de su campo y la ruptura de su formación.</p></details></article>
       </div>
       <div class="kv-viewer" id="exerciseViewer"></div>
-      <div class="extra-grid" id="exerciseList"></div>
+      
     </section>
 
     <section class="extra-section" id="partidas" aria-label="Partidas famosas">
@@ -155,7 +157,7 @@
         <h2>Los cuatro conceptos en la práctica</h2>
       </div>
       <div class="kv-viewer" id="famousViewer"></div>
-      <div class="extra-grid" id="famousList"></div>
+      
     </section>
   </main>
 

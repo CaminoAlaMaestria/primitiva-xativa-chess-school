@@ -400,3 +400,11 @@ footer { max-width: 1500px; padding: 25px clamp(18px, 4vw, 64px); margin: auto; 
 .kv-eng-score{font-size:1.3rem}
 .analysis-section{display:none !important}
 .main-engine{margin-top:10px}
+
+/* Controles duplicados ocultos (siguen funcionando por debajo) */
+.move-panel .control-grid, .move-panel .ply-nav { display: none !important; }
+.board-col { display: flex; flex-direction: column; min-width: 0; }
+.board-col .main-nav { margin: 12px 0 0; }
+.move-log-wrap .nag-bar { margin: 0 0 8px; }
+/* Botones de profesor: visibles solo tras la contraseña */
+body:not(.teacher-ok) #openSourceBtn, body:not(.teacher-ok) #openTextEditorBtn { display: none !important; }

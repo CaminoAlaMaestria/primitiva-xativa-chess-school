@@ -1504,7 +1504,7 @@ function initializeEvents() {
     b.addEventListener('click', (e) => {
       if (teacherOk) return;
       const pw = window.prompt('Contraseña del profesor:');
-      if (pw === '2222') { teacherOk = true; return; }
+      if (pw === '2222') { teacherOk = true; document.body.classList.add('teacher-ok'); return; }
       e.stopImmediatePropagation(); e.preventDefault();
       if (pw !== null) window.alert('Contraseña incorrecta.');
     }, true);

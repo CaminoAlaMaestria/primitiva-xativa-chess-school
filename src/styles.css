@@ -257,3 +257,7 @@ button.bg-card, a.bg-card { background: #ffffff; color: #071d2f; }
   color: #7fd8c8;
 }
 .karpov-contrast button.bg-muted:hover { background-color: #0c2c45; }
+
+/* Kárpov y Arcángel: letra más grande y legible para proyector */
+.karpov-contrast, .theme-projector { font-family: "Source Sans 3", system-ui, sans-serif; font-size: 1.25rem; line-height: 1.6; }
+.karpov-contrast p, .karpov-contrast li, .theme-projector p, .theme-projector li { font-family: "Source Sans 3", system-ui, sans-serif; font-size: 1.2rem; line-height: 1.65; }
