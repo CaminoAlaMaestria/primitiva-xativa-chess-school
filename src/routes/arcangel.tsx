@@ -150,7 +150,6 @@ function ArcangelPage() {
           <PgnStudyViewer game={famous} intro="Fabiano Caruana (blancas) contra Magnus Carlsen (negras). Avanza jugada a jugada para ver cómo la Arcángel moderna se convierte en una clase de coordinación." />
         </Section>
 
-        <p className="flex items-center justify-center gap-2 pt-4 text-center text-sm text-muted-foreground"><BookOpen className="h-4 w-4" /> Estudio original anotado por «purif» <Sparkles className="h-4 w-4" /></p>
       </div>
     </main>
   );

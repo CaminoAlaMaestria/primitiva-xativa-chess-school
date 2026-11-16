@@ -25,7 +25,7 @@ function Index() {
   return (
     <main className="min-h-screen bg-background">
       <header className="aula-header px-6 py-16 text-center">
-        <p className="font-display text-sm tracking-[0.4em] text-primary aula-kicker">Panel del profesor</p>
+        <p className="font-display text-sm tracking-[0.4em] text-primary aula-kicker">Panel del curso</p>
         <h1 className="mt-3 font-display text-5xl font-black uppercase tracking-wide text-primary sm:text-7xl">Aula de Ajedrez</h1>
         <p className="mt-3 text-2xl italic text-muted-foreground aula-intro">Elige una ventana para empezar la clase</p>
       </header>
