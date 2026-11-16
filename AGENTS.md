@@ -33,3 +33,4 @@ use the editor.
 - Each lesson sheet (ficha) is its own single-segment route (e.g. /karpov, /peones-bajo-presion) and section pages (/campeones, /apertura-espanola, /clases-avanzadas) list them; single-segment paths keep the lesson's relative `assets/...` URLs working.
 - Imported sheets are kept byte-for-byte from their source projects (src/components/karpov, src/lesson); only route wiring and the floating "Panel" back link are added.
 - Section pages export their `fichas` array so a test can assert a sheet is unlocked and points at its route, without rendering the app shell.
+- Offline support uses vite-plugin-pwa (generateSW, output to dist/client) registered only via src/lib/register-sw.ts, which refuses dev/preview hosts; keeps Lovable previews free of stale caches.
