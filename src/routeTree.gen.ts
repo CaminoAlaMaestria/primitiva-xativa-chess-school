@@ -14,6 +14,7 @@ import { Route as AperturaEspanolaRouteImport } from './routes/apertura-espanola
 import { Route as ArcangelRouteImport } from './routes/arcangel'
 import { Route as CampeonesRouteImport } from './routes/campeones'
 import { Route as ClasesAvanzadasRouteImport } from './routes/clases-avanzadas'
+import { Route as FuerzaDeLasPiezasRouteImport } from './routes/fuerza-de-las-piezas'
 import { Route as KarpovRouteImport } from './routes/karpov'
 import { Route as PeonesBajoPresionRouteImport } from './routes/peones-bajo-presion'
 
@@ -42,6 +43,11 @@ const ClasesAvanzadasRoute = ClasesAvanzadasRouteImport.update({
   path: '/clases-avanzadas',
   getParentRoute: () => rootRouteImport,
 } as any)
+const FuerzaDeLasPiezasRoute = FuerzaDeLasPiezasRouteImport.update({
+  id: '/fuerza-de-las-piezas',
+  path: '/fuerza-de-las-piezas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const KarpovRoute = KarpovRouteImport.update({
   id: '/karpov',
   path: '/karpov',
@@ -59,6 +65,7 @@ export interface FileRoutesByFullPath {
   '/arcangel': typeof ArcangelRoute
   '/campeones': typeof CampeonesRoute
   '/clases-avanzadas': typeof ClasesAvanzadasRoute
+  '/fuerza-de-las-piezas': typeof FuerzaDeLasPiezasRoute
   '/karpov': typeof KarpovRoute
   '/peones-bajo-presion': typeof PeonesBajoPresionRoute
 }
@@ -68,6 +75,7 @@ export interface FileRoutesByTo {
   '/arcangel': typeof ArcangelRoute
   '/campeones': typeof CampeonesRoute
   '/clases-avanzadas': typeof ClasesAvanzadasRoute
+  '/fuerza-de-las-piezas': typeof FuerzaDeLasPiezasRoute
   '/karpov': typeof KarpovRoute
   '/peones-bajo-presion': typeof PeonesBajoPresionRoute
 }
@@ -78,6 +86,7 @@ export interface FileRoutesById {
   '/arcangel': typeof ArcangelRoute
   '/campeones': typeof CampeonesRoute
   '/clases-avanzadas': typeof ClasesAvanzadasRoute
+  '/fuerza-de-las-piezas': typeof FuerzaDeLasPiezasRoute
   '/karpov': typeof KarpovRoute
   '/peones-bajo-presion': typeof PeonesBajoPresionRoute
 }
@@ -89,6 +98,7 @@ export interface FileRouteTypes {
     | '/arcangel'
     | '/campeones'
     | '/clases-avanzadas'
+    | '/fuerza-de-las-piezas'
     | '/karpov'
     | '/peones-bajo-presion'
   fileRoutesByTo: FileRoutesByTo
@@ -98,6 +108,7 @@ export interface FileRouteTypes {
     | '/arcangel'
     | '/campeones'
     | '/clases-avanzadas'
+    | '/fuerza-de-las-piezas'
     | '/karpov'
     | '/peones-bajo-presion'
   id:
@@ -107,6 +118,7 @@ export interface FileRouteTypes {
     | '/arcangel'
     | '/campeones'
     | '/clases-avanzadas'
+    | '/fuerza-de-las-piezas'
     | '/karpov'
     | '/peones-bajo-presion'
   fileRoutesById: FileRoutesById
@@ -117,6 +129,7 @@ export interface RootRouteChildren {
   ArcangelRoute: typeof ArcangelRoute
   CampeonesRoute: typeof CampeonesRoute
   ClasesAvanzadasRoute: typeof ClasesAvanzadasRoute
+  FuerzaDeLasPiezasRoute: typeof FuerzaDeLasPiezasRoute
   KarpovRoute: typeof KarpovRoute
   PeonesBajoPresionRoute: typeof PeonesBajoPresionRoute
 }
@@ -158,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ClasesAvanzadasRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/fuerza-de-las-piezas': {
+      id: '/fuerza-de-las-piezas'
+      path: '/fuerza-de-las-piezas'
+      fullPath: '/fuerza-de-las-piezas'
+      preLoaderRoute: typeof FuerzaDeLasPiezasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/karpov': {
       id: '/karpov'
       path: '/karpov'
@@ -181,6 +201,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArcangelRoute: ArcangelRoute,
   CampeonesRoute: CampeonesRoute,
   ClasesAvanzadasRoute: ClasesAvanzadasRoute,
+  FuerzaDeLasPiezasRoute: FuerzaDeLasPiezasRoute,
   KarpovRoute: KarpovRoute,
   PeonesBajoPresionRoute: PeonesBajoPresionRoute,
 }

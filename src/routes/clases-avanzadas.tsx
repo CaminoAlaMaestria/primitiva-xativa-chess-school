@@ -1,6 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { GraduationCap } from "lucide-react";
-import { SectionPage } from "@/components/aula/Section";
+import { SectionPage, type Ficha } from "@/components/aula/Section";
+
+export const FICHAS: Ficha[] = [
+  { title: "Nivel 1 · La fuerza de las piezas", subtitle: "Diagramas A16–A29: estructura, plan y mayoría de peones", to: "/fuerza-de-las-piezas" },
+  { title: "Nivel 2 · Peones bajo presión", subtitle: "Diagramas A30–A43, tablero, variantes y Stockfish", to: "/peones-bajo-presion" },
+];
 
 export const Route = createFileRoute("/clases-avanzadas")({
   head: () => ({
@@ -19,7 +24,7 @@ export const Route = createFileRoute("/clases-avanzadas")({
       title="Clases avanzadas"
       intro="Niveles que iremos ampliando poco a poco."
       icon={<GraduationCap className="h-12 w-12" />}
-      fichas={[{ title: "Nivel 1 · Peones bajo presión", subtitle: "Diagramas A30–A43, tablero, variantes y Stockfish", to: "/peones-bajo-presion" }]}
+      fichas={FICHAS}
     />
   ),
 });
