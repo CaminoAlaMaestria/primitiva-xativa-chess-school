@@ -2,7 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ChevronRight, Lock } from "lucide-react";
 import type { ReactNode } from "react";
 
-export type Ficha = { title: string; subtitle: string; to?: "/karpov" | "/peones-bajo-presion" | "/arcangel" };
+export type Ficha = { title: string; subtitle: string; to?: "/karpov" | "/peones-bajo-presion" | "/arcangel" | "/fuerza-de-las-piezas" };
 
 export function BackToPanel({ floating = false }: { floating?: boolean }) {
   return (
