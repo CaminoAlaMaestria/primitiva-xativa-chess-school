@@ -1,3 +1,3 @@
-declare module '@/lesson/app.js' {
+declare module '@/lesson-fuerza/app.js' {
   export function startLesson(): void;
 }
