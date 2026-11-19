@@ -1614,12 +1614,13 @@ function renderSectionViewer(group) {
   let g; try { g = new Chess(fen); } catch { return; }
   const rows = g.board();
   let sq = '';
-  for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+  for (let vr = 0; vr < 8; vr++) for (let vc = 0; vc < 8; vc++) {
+    const r = st.flip ? 7 - vr : vr, c = st.flip ? 7 - vc : vc;
     const name = 'abcdefgh'[c] + (8 - r);
     const pc = rows[r][c];
     const light = (r + c) % 2 === 0;
     const hl = (last && (name === last.from || name === last.to)) || st.pick === name;
-    sq += `<div data-sq="${name}" class="kv-sq ${light ? 'l' : 'd'} ${hl ? 'hl' : ''}">${c === 0 ? `<i class="kv-rank">${8 - r}</i>` : ''}${r === 7 ? `<i class="kv-file">${'abcdefgh'[c]}</i>` : ''}${pc ? `<img src="${pieceImage(pc)}" alt="" draggable="false">` : ''}</div>`;
+    sq += `<div data-sq="${name}" class="kv-sq ${light ? 'l' : 'd'} ${hl ? 'hl' : ''}">${vc === 0 ? `<i class="kv-rank">${8 - r}</i>` : ''}${vr === 7 ? `<i class="kv-file">${'abcdefgh'[c]}</i>` : ''}${pc ? `<img src="${pieceImage(pc)}" alt="" draggable="false">` : ''}</div>`;
   }
   const startNo = Number(p.fen.split(' ')[5]) || 1;
   const blackFirst = p.fen.split(' ')[1] === 'b';
@@ -1639,7 +1640,7 @@ function renderSectionViewer(group) {
       <div class="kv-left">
         <div class="kv-board">${sq}</div>
         <div class="kv-nav">
-          <button data-nav="first" aria-label="Inicio">⏮</button><button data-nav="prev" aria-label="Anterior">◀</button><button data-nav="play" aria-label="Reproducir">▷</button><button data-nav="next" aria-label="Siguiente">▶</button><button data-nav="last" aria-label="Final">⏭</button>
+          <button data-nav="first" aria-label="Inicio">⏮</button><button data-nav="prev" aria-label="Anterior">◀</button><button data-nav="play" aria-label="Reproducir">▷</button><button data-nav="next" aria-label="Siguiente">▶</button><button data-nav="last" aria-label="Final">⏭</button><button data-flip aria-label="Girar tablero" title="Girar tablero">⇅</button>
         </div>
       </div>
       <div class="kv-right">
@@ -1661,6 +1662,7 @@ function renderSectionViewer(group) {
     else { st.pick = null; st.msg = 'No es la jugada. ¡Inténtalo de nuevo!'; }
     renderSectionViewer(group);
   }));
+  host.querySelector('[data-flip]').addEventListener('click', () => { st.flip = !st.flip; renderSectionViewer(group); });
   host.querySelector('[data-eng]').addEventListener('click', () => { st.eng = !st.eng; renderSectionViewer(group); });
   if (st.eng) {
     const out = host.querySelector('.kv-eng-out'); const reqFen = fen;
