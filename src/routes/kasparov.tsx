@@ -3,6 +3,8 @@ import { BackToPanel } from "@/components/aula/Section";
 import { useState } from "react";
 import { Crown, Users, GraduationCap, Trophy, Swords, Star, Printer, Baby, Landmark, Zap, Cpu, BookOpen, Medal, History, Youtube, Flame } from "lucide-react";
 import { GameViewer, type Game } from "@/components/karpov/GameViewer";
+import { Timeline } from "@/components/karpov/Timeline";
+import { KASPAROV_MILESTONES } from "@/components/karpov/kasparov-milestones";
 
 export const Route = createFileRoute("/kasparov")({
   head: () => ({
@@ -63,17 +65,6 @@ const STATS = [
   ["5", "Matches mundiales vs. Kárpov"],
 ];
 
-const TIMELINE = [
-  ["1963", "Nace el 13 de abril en Bakú (Azerbaiyán, URSS) como Garri Weinstein."],
-  ["1976", "Campeón juvenil de la URSS con 12 años."],
-  ["1980", "Campeón mundial juvenil y gran maestro con 17 años."],
-  ["1984–85", "Primer match con Kárpov: anulado tras 48 partidas."],
-  ["1985", "Gana el título mundial en Moscú: 13.º campeón del mundo."],
-  ["1993", "Rompe con la FIDE y juega por la PCA contra Short."],
-  ["1996–97", "Matches contra Deep Blue: gana en 1996 y pierde en 1997."],
-  ["2000", "Pierde el título ante Kramnik en Londres."],
-  ["2005", "Se retira del ajedrez profesional tras ganar Linares."],
-];
 
 function Card({ n, title, icon: Icon, children, className = "" }: { n: number; title: string; icon: typeof Crown; children: React.ReactNode; className?: string }) {
   return (
@@ -184,15 +175,12 @@ function Kasparov() {
           <GameViewer game={GAMES[g]!} />
         </Card>
 
-        <Card n={7} title="Cronología de su carrera" icon={History}>
-          <ol className="space-y-3 border-l-2 border-primary/50 pl-5">
-            {TIMELINE.map(([y, t]) => (
-              <li key={y}>
-                <b className="font-display text-primary">{y}</b>
-                <p className="text-base">{t}</p>
-              </li>
-            ))}
-          </ol>
+        <Card n={7} title="Cronología: desbloquea su carrera" icon={History}>
+          <div className="mb-5 rounded-lg border border-primary/40 bg-secondary px-4 py-3 text-sm">
+            <b className="font-display uppercase tracking-wider text-primary">Cómo funciona</b>
+            <span className="text-muted-foreground"> — cada hito está cerrado con candado. Resuelve el acertijo de la partida de Kaspárov de ese momento para abrir el siguiente.</span>
+          </div>
+          <Timeline milestones={KASPAROV_MILESTONES} player="Kaspárov" />
         </Card>
 
         <Card n={8} title="Su legado al ajedrez" icon={Landmark} className="border-2 border-primary/80">

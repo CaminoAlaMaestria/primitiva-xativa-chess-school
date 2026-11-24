@@ -16,7 +16,7 @@ export type Milestone = {
   answer?: number;
 };
 
-const MILESTONES: Milestone[] = [
+export const MILESTONES: Milestone[] = [
   {
     year: "1969",
     title: "Campeón mundial juvenil",
@@ -142,7 +142,7 @@ function QuizCard({ m, onSolved }: { m: Milestone; onSolved: () => void }) {
   return (
     <div className="flex flex-col gap-3">
       <div className="rounded-lg border border-primary/50 bg-muted p-4">
-        <p className="font-display text-xs tracking-widest text-primary">La pregunta final</p>
+        <p className="font-display text-xs tracking-widest text-primary">La pregunta del hito</p>
         <p className="mt-2 leading-snug">{m.question}</p>
       </div>
       <div className="grid gap-2 sm:grid-cols-2">
@@ -187,7 +187,7 @@ function QuizCard({ m, onSolved }: { m: Milestone; onSolved: () => void }) {
 
 const FILES = "abcdefgh";
 
-export function PuzzleBoard({ m, onSolved }: { m: Milestone; onSolved: () => void }) {
+export function PuzzleBoard({ m, onSolved, player = "Kárpov" }: { m: Milestone; onSolved: () => void; player?: string }) {
   const chess = useMemo(() => {
     const c = new Chess();
     for (const mv of m.moves.split(" ")) c.move(mv);
@@ -315,7 +315,7 @@ export function PuzzleBoard({ m, onSolved }: { m: Milestone; onSolved: () => voi
           <>
             {wrong && (
               <div className="rounded-lg border border-destructive/60 bg-destructive/10 p-4 text-sm">
-                <b className="text-destructive">Esa no es la jugada de Kárpov.</b> Inténtalo de nuevo: toca una pieza blanca y luego la casilla de destino.
+                <b className="text-destructive">Esa no es la jugada de {player}.</b> Inténtalo de nuevo: toca una pieza blanca y luego la casilla de destino.
               </div>
             )}
             {showHint && !solved && (
@@ -360,7 +360,7 @@ export function PuzzleBoard({ m, onSolved }: { m: Milestone; onSolved: () => voi
   );
 }
 
-export function Timeline() {
+export function Timeline({ milestones: list = MILESTONES, player = "Kárpov" }: { milestones?: Milestone[]; player?: string } = {}) {
   const [unlocked, setUnlocked] = useState(1);
   const [active, setActive] = useState(0);
   const [solvedSet, setSolvedSet] = useState<Set<number>>(new Set());
@@ -370,12 +370,12 @@ export function Timeline() {
     setUnlocked((u) => Math.max(u, i + 2));
   };
 
-  const m = MILESTONES[active]!;
+  const m = list[active]!;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[minmax(0,300px)_1fr]">
       <ol className="relative space-y-1 border-l-2 border-primary/30 pl-4">
-        {MILESTONES.map((x, i) => {
+        {list.map((x, i) => {
           const isLocked = i >= unlocked;
           const isSolved = solvedSet.has(i);
           const isActive = i === active;
@@ -425,19 +425,19 @@ export function Timeline() {
         {m.options ? (
           <QuizCard key={active} m={m} onSolved={() => markSolved(active)} />
         ) : (
-          <PuzzleBoard key={active} m={m} onSolved={() => markSolved(active)} />
+          <PuzzleBoard key={active} m={m} player={player} onSolved={() => markSolved(active)} />
         )}
-        {solvedSet.has(active) && active + 1 < MILESTONES.length && (
+        {solvedSet.has(active) && active + 1 < list.length && (
           <button
             onClick={() => setActive(active + 1)}
             className="mt-4 flex items-center gap-2 rounded-md bg-primary px-4 py-2 font-display font-bold text-primary-foreground hover:opacity-90"
           >
-            Siguiente hito: {MILESTONES[active + 1]!.year} <ArrowRight className="h-4 w-4" />
+            Siguiente hito: {list[active + 1]!.year} <ArrowRight className="h-4 w-4" />
           </button>
         )}
-        {solvedSet.size === MILESTONES.length && (
+        {solvedSet.size === list.length && (
           <p className="mt-4 rounded-lg border-2 border-primary bg-primary/10 p-4 text-center font-display font-bold text-primary">
-            ¡Cronología completa! Has recorrido toda la carrera de Kárpov, jugada a jugada.
+            ¡Cronología completa! Has recorrido toda la carrera de {player}, jugada a jugada.
           </p>
         )}
       </div>
