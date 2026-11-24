@@ -19,7 +19,7 @@ export const Route = createFileRoute("/campeones")({
       title="Campeones mundiales"
       intro="Vida, partidas y legado de quienes llevaron la corona."
       icon={<Crown className="h-12 w-12" />}
-      fichas={[{ title: "Anatoli Kárpov", subtitle: "Ajedrez y vida · 12.º campeón del mundo", to: "/karpov" }]}
+      fichas={[{ title: "Anatoli Kárpov", subtitle: "Ajedrez y vida · 12.º campeón del mundo", to: "/karpov" }, { title: "Garri Kaspárov", subtitle: "Ajedrez y vida · 13.º campeón del mundo", to: "/kasparov" }]}
     />
   ),
 });
