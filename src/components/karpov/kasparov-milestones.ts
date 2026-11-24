@@ -10,7 +10,7 @@ export const KASPAROV_MILESTONES: Milestone[] = [
     question: "¿Qué apellido llevaba Garri cuando nació en Bakú en 1963?",
     options: ["Kasparián", "Weinstein", "Botvínnik", "Nikitin"],
     answer: 1,
-    hint: "Pista: era el apellido de su padre, Kim.",
+    hint: "Pista: un apellido de nacimiento y un apellido adoptado pueden proceder de ramas distintas de la familia. Distingue su origen familiar de su posterior identidad pública.",
     success: "¡Correcto! Nació como Garri Weinstein y adoptó después el apellido de su madre, Kasparián, en forma rusa: Kaspárov.",
   }),
   {
@@ -21,7 +21,7 @@ export const KASPAROV_MILESTONES: Milestone[] = [
     moves: "d4 Nf6 c4 e6 Nf3 b6 Nc3 Bb7 a3 d5 cxd5 Nxd5 e3 Nxc3 bxc3 Be7 Bb5+ c6 Bd3 c5 O-O Nc6 Bb2 Rc8 Qe2 O-O Rad1 Qc7 c4 cxd4 exd4 Na5 d5 exd5 cxd5 Bxd5",
     solution: "Bxh7+",
     question: "Juegan las blancas. Las negras acaban de comer en d5. ¿Con qué sacrificio clásico abrió Kaspárov el enroque negro?",
-    hint: "Pista: el alfil de d3 apunta directamente al peón de h7.",
+    hint: "Pista: un sacrificio contra el enroque puede atraer al rey fuera de su refugio. Antes de entregar material, comprueba qué líneas se abren y cómo pueden coordinarse las piezas atacantes.",
     success: "¡19.Axh7+! El sacrificio griego: tras Rxh7, Txd5 recupera la pieza y después Axg7 deja al rey negro sin defensa.",
   },
   q({
@@ -31,7 +31,7 @@ export const KASPAROV_MILESTONES: Milestone[] = [
     question: "¿Cómo terminó el primer match Kárpov–Kaspárov (1984-85), antes del de 1985?",
     options: ["Ganó Kárpov 6–0", "Ganó Kaspárov en la partida 48", "Fue anulado tras 48 partidas sin ganador", "Empataron 12–12"],
     answer: 2,
-    hint: "Pista: duró cinco meses y el presidente de la FIDE intervino.",
+    hint: "Pista: distingue entre alcanzar el resultado exigido para ganar un match y que una autoridad tome una decisión sobre su continuidad. La resistencia física también cuenta en una competición tan larga.",
     success: "¡Correcto! Tras 48 partidas, Campomanes anuló el match por agotamiento de los jugadores. Se repitió en 1985.",
   }),
   q({
@@ -41,7 +41,7 @@ export const KASPAROV_MILESTONES: Milestone[] = [
     question: "¿Qué ocurrió en la partida 24 de Sevilla 1987?",
     options: ["Kaspárov ganó, empató 12–12 y retuvo el título", "Kárpov ganó y recuperó el título", "Tablas: Kárpov campeón", "No se jugó"],
     answer: 0,
-    hint: "Pista: el campeón conserva el título en caso de empate.",
+    hint: "Pista: separa el resultado de una partida del marcador total del match. Calcula cómo cambia una desventaja de un punto con una victoria, unas tablas o una derrota.",
     success: "¡Correcto! Kaspárov ganó la última partida, empató 12–12 y, como campeón, mantuvo la corona.",
   }),
   {
@@ -52,7 +52,7 @@ export const KASPAROV_MILESTONES: Milestone[] = [
     moves: "e4 e5 Nf3 Nc6 Bb5 a6 Ba4 Nf6 O-O Nxe4 d4 b5 Bb3 d5 dxe5 Be6 Nbd2 Nc5 c3 d4 Ng5 dxc3 Nxe6 fxe6 bxc3 Qd3",
     solution: "Bc2",
     question: "Juegan las blancas. La dama negra ataca. ¿Qué novedad preparada en casa sorprendió a Anand, aunque entrega una torre?",
-    hint: "Pista: el alfil de b3 se retira atacando a la dama.",
+    hint: "Pista: la iniciativa consiste en crear amenazas que obligan al rival a responder. Una jugada activa puede ganar tiempo y favorecer la coordinación, aunque deje material sin defender.",
     success: "¡14.Ac2! Kaspárov sacrifica la torre de a1 por un ataque demoledor. Ganó la partida y retuvo el título.",
   },
   q({
@@ -62,7 +62,7 @@ export const KASPAROV_MILESTONES: Milestone[] = [
     question: "¿Qué pasó en el match revancha de 1997?",
     options: ["Kaspárov ganó 4–2", "Deep Blue ganó 3,5–2,5", "Empataron 3–3", "Kaspárov abandonó antes de empezar"],
     answer: 1,
-    hint: "Pista: fue la primera vez que una máquina venció a un campeón del mundo en un match.",
+    hint: "Pista: un match se decide por la suma de todas sus partidas, no por una victoria aislada. Diferencia lo ocurrido en el primer encuentro de lo sucedido en la revancha.",
     success: "¡Correcto! Deep Blue ganó 3,5–2,5. Kaspárov pidió una revancha que IBM nunca aceptó.",
   }),
   {
@@ -73,7 +73,7 @@ export const KASPAROV_MILESTONES: Milestone[] = [
     moves: "e4 d6 d4 Nf6 Nc3 g6 Be3 Bg7 Qd2 c6 f3 b5 Nge2 Nbd7 Bh6 Bxh6 Qxh6 Bb7 a3 e5 O-O-O Qe7 Kb1 a6 Nc1 O-O-O Nb3 exd4 Rxd4 c5 Rd1 Nb6 g3 Kb8 Na5 Ba8 Bh3 d5 Qf4+ Ka7 Rhe1 d4 Nd5 Nbxd5 exd5 Qd6",
     solution: "Rxd4",
     question: "Juegan las blancas. ¿Qué sacrificio de torre inició la cacería del rey negro por todo el tablero?",
-    hint: "Pista: la torre de d1 puede comerse el peón de d4.",
+    hint: "Pista: un sacrificio puede abrir líneas y dejar al rey expuesto. Valora la actividad y los jaques que tendrías después de la aceptación, no solo el material que entregas.",
     success: "¡24.Txd4!! Tras cxd4, Te7+ arrastra al rey negro hasta el campo blanco. Una obra maestra.",
   },
   q({
@@ -83,7 +83,7 @@ export const KASPAROV_MILESTONES: Milestone[] = [
     question: "¿A qué se dedicó Kaspárov tras retirarse en 2005?",
     options: ["A entrenar a la selección rusa", "A la política y la defensa de los derechos humanos", "A programar motores de ajedrez", "Al póquer profesional"],
     answer: 1,
-    hint: "Pista: se convirtió en opositor al gobierno de Rusia.",
+    hint: "Pista: retirarse de la competición no implica dejar la vida pública. Piensa en la diferencia entre seguir vinculado al deporte y trasladar esa influencia a otros ámbitos de la sociedad.",
     success: "¡Correcto! Se dedicó a la política y a los derechos humanos, sin dejar de divulgar el ajedrez.",
   }),
 ];
