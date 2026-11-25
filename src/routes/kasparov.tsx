@@ -190,7 +190,7 @@ function Kasparov() {
           <div className="grid gap-4 md:grid-cols-2">
             <Legacy icon={Zap} title="El ajedrez dinámico">Demostró que la iniciativa vale más que el material: sacrificaba peones y piezas por actividad y presión constante.</Legacy>
             <Legacy icon={BookOpen} title="Preparación de aperturas">Revolucionó el estudio de aperturas con análisis profundos; el Gambito Kaspárov o su uso de la Najdorf y la India de Rey marcaron época.</Legacy>
-            <Legacy icon={Cpu} title="Ajedrez y ordenadores">Fue el primero en usar bases de datos a gran escala y protagonizó los históricos duelos con Deep Blue. Después creó el «ajedrez avanzado» humano + máquina.</Legacy>
+            <Legacy icon={Cpu} title="Ajedrez y ordenadores">Fue el primero en usar bases de datos a gran escala y protagonizó los históricos duelos con Deep Blue. Después creó el «ajedrez avanzado» humano + máquina: en 1998 jugó en León contra Topálov con la ayuda del módulo Fritz 5.</Legacy>
             <Legacy icon={GraduationCap} title="Divulgación">Su serie de libros «Mis geniales predecesores» repasa a todos los campeones del mundo y es obra de referencia.</Legacy>
           </div>
           <div className="mt-4 flex items-center gap-3 rounded-lg border border-primary/40 bg-card p-4">
