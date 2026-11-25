@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BackToPanel } from "@/components/aula/Section";
 import { useState } from "react";
-import { Crown, Users, GraduationCap, Trophy, Swords, Star, Printer, Baby, Landmark, Zap, Cpu, BookOpen, Medal, History, Youtube, Flame } from "lucide-react";
+import songAsset from "@/assets/el-ogro-tortura-mental.m4a.asset.json";
+import { Crown, Users, GraduationCap, Trophy, Swords, Star, Printer, Baby, Landmark, Zap, Cpu, BookOpen, Medal, History, Youtube, Flame, Music } from "lucide-react";
 import { GameViewer, type Game } from "@/components/karpov/GameViewer";
 import { Timeline } from "@/components/karpov/Timeline";
 import { KASPAROV_MILESTONES } from "@/components/karpov/kasparov-milestones";
@@ -235,6 +236,14 @@ function Kasparov() {
             />
           </div>
           <a href={`https://www.youtube.com/watch?v=${VIDEO_ID}`} target="_blank" rel="noreferrer" className="mt-4 inline-block text-primary underline">Ver en YouTube →</a>
+        </Card>
+
+
+        <Card n={12} title="Canción: El Ogro y su tortura mental" icon={Music}>
+          <p className="font-display text-primary">Una balada a lo Alejandro Sanz sobre la vida de Kaspárov.</p>
+          <audio className="mt-4 w-full" controls preload="auto" src={songAsset.url}>
+            Tu navegador no puede reproducir este audio.
+          </audio>
         </Card>
 
         <p className="pt-6 text-center text-xl italic text-primary">"El ajedrez es la tortura mental."</p>
