@@ -33,6 +33,11 @@ export default defineConfig({
           cleanupOutdatedCaches: true,
           runtimeCaching: [
             {
+              urlPattern: ({ url, sameOrigin }) => sameOrigin && /\.(mp3|m4a)$/i.test(url.pathname),
+              handler: "CacheFirst",
+              options: { cacheName: "audio", rangeRequests: true, cacheableResponse: { statuses: [0, 200] }, expiration: { maxEntries: 20 } },
+            },
+            {
               urlPattern: ({ request, url }) => request.mode === "navigate" && !url.pathname.startsWith("/~oauth"),
               handler: "NetworkFirst",
               options: { cacheName: "pages", networkTimeoutSeconds: 4, expiration: { maxEntries: 50 } },

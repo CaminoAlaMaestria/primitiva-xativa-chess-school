@@ -2,6 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { BackToPanel } from "@/components/aula/Section";
 import { useState } from "react";
 import songAsset from "@/assets/el-ogro-tortura-mental.m4a.asset.json";
+import coverAsset from "@/assets/el-ogro-caratula.png.asset.json";
+import docAsset from "@/assets/kasparov-documental.mp3.asset.json";
 import { Crown, Users, GraduationCap, Trophy, Swords, Star, Printer, Baby, Landmark, Zap, Cpu, BookOpen, Medal, History, Youtube, Flame, Music } from "lucide-react";
 import { GameViewer, type Game } from "@/components/karpov/GameViewer";
 import { Timeline } from "@/components/karpov/Timeline";
@@ -226,21 +228,16 @@ function Kasparov() {
 
         <Card n={11} title="Fuente: Gambito de Dama · Documental" icon={Youtube}>
           <p className="font-display text-primary">"Garri Kaspárov: biografía, estilo, frases y curiosidades"</p>
-          <div className="mt-4 aspect-video overflow-hidden rounded-lg border border-primary/50">
-            <iframe
-              className="h-full w-full"
-              src={`https://www.youtube-nocookie.com/embed/${VIDEO_ID}`}
-              title="Documental de Garri Kaspárov"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
+          <audio className="mt-4 w-full" controls preload="auto" src={docAsset.url}>
+            Tu navegador no puede reproducir este audio.
+          </audio>
           <a href={`https://www.youtube.com/watch?v=${VIDEO_ID}`} target="_blank" rel="noreferrer" className="mt-4 inline-block text-primary underline">Ver en YouTube →</a>
         </Card>
 
 
         <Card n={12} title="Canción: El Ogro y su tortura mental" icon={Music}>
           <p className="font-display text-primary">Una balada a lo Alejandro Sanz sobre la vida de Kaspárov.</p>
+          <img src={coverAsset.url} alt="Carátula de la canción El Ogro y su tortura mental" className="mx-auto mt-4 w-full max-w-xs rounded-lg border border-primary/50" />
           <audio className="mt-4 w-full" controls preload="auto" src={songAsset.url}>
             Tu navegador no puede reproducir este audio.
           </audio>
