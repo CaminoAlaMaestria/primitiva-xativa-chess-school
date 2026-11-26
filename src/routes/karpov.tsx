@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { BackToPanel } from "@/components/aula/Section";
 import { useState } from "react";
-import { Crown, Users, GraduationCap, Trophy, Swords, Star, Mic, Printer, Baby, Landmark, Grip, Crosshair, Castle, BookOpen, Medal, History } from "lucide-react";
+import { Crown, Users, GraduationCap, Trophy, Swords, Star, Mic, Music, Printer, Baby, Landmark, Grip, Crosshair, Castle, BookOpen, Medal, History } from "lucide-react";
 import { GameViewer, type Game } from "@/components/karpov/GameViewer";
 import { Timeline } from "@/components/karpov/Timeline";
 import { PodcastPlayer } from "@/components/karpov/PodcastPlayer";
+import songAsset from "@/assets/la-boa-constrictor.m4a.asset.json";
 
 export const Route = createFileRoute("/karpov")({
   head: () => ({
@@ -251,6 +252,13 @@ function Index() {
           <p className="font-display text-primary">"Anatoli Kárpov, los secretos de una leyenda"</p>
           <PodcastPlayer />
           <a href="https://go.ivoox.com/rf/167204673" target="_blank" rel="noreferrer" className="mt-4 inline-block text-primary underline">Escuchar en iVoox →</a>
+        </Card>
+
+        <Card n={12} title="Canción: La boa constrictor" icon={Music}>
+          <p className="font-display text-primary">Una canción sobre la vida y el legado de Anatoli Kárpov.</p>
+          <audio aria-label="Canción La boa constrictor" className="mt-4 w-full" controls preload="auto" src={songAsset.url}>
+            Tu navegador no puede reproducir este audio.
+          </audio>
         </Card>
 
         <p className="pt-6 text-center text-xl italic text-primary">"El ajedrez es todo: arte, ciencia y deporte."</p>
