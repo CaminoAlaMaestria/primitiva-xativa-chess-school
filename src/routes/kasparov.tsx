@@ -27,6 +27,7 @@ const VIDEO_ID = "QgObauNfRz0";
 
 const GAMES: Game[] = [
   {
+    id: "kasparov-topalov-1999",
     title: "Kaspárov – Topálov",
     event: "Wijk aan Zee, 1999 · Defensa Pirc",
     result: "1-0",
@@ -44,6 +45,7 @@ const GAMES: Game[] = [
     },
   },
   {
+    id: "karpov-kasparov-1985",
     title: "Kárpov – Kaspárov",
     event: "Mundial de Moscú, 1985 · Partida 16 · Siciliana",
     result: "0-1",
@@ -162,31 +164,7 @@ function Kasparov() {
           <p className="mt-4">El joven rebelde de Bakú, agresivo y dinámico, contra el campeón del sistema soviético. Jugaron 144 partidas de match mundial.</p>
         </Card>
 
-        <Card n={6} title="Partidas famosas" icon={Crown}>
-          <div className="mb-5 flex flex-wrap gap-2">
-            {GAMES.map((x, i) => (
-              <button
-                key={x.title}
-                onClick={() => setG(i)}
-                className={`rounded-md border px-4 py-2 text-left ${g === i ? "border-primary bg-primary text-primary-foreground" : "border-border bg-muted hover:border-primary"}`}
-              >
-                <div className="font-display text-sm font-bold">{x.title}</div>
-                <div className="text-xs opacity-80">{x.event}</div>
-              </button>
-            ))}
-          </div>
-          <GameViewer game={GAMES[g]!} />
-        </Card>
-
-        <Card n={7} title="Cronología: desbloquea su carrera" icon={History}>
-          <div className="mb-5 rounded-lg border border-primary/40 bg-secondary px-4 py-3 text-sm">
-            <b className="font-display uppercase tracking-wider text-primary">Cómo funciona</b>
-            <span className="text-muted-foreground"> — cada hito está cerrado con candado. Resuelve el acertijo de la partida de Kaspárov de ese momento para abrir el siguiente.</span>
-          </div>
-          <Timeline milestones={KASPAROV_MILESTONES} player="Kaspárov" />
-        </Card>
-
-        <Card n={8} title="Su legado al ajedrez" icon={Landmark} className="border-2 border-primary/80">
+        <Card n={6} title="Su legado al ajedrez" icon={Landmark} className="border-2 border-primary/80">
           <div className="grid gap-4 md:grid-cols-2">
             <Legacy icon={Zap} title="El ajedrez dinámico">Demostró que la iniciativa vale más que el material: sacrificaba peones y piezas por actividad y presión constante.</Legacy>
             <Legacy icon={BookOpen} title="Preparación de aperturas">Revolucionó el estudio de aperturas con análisis profundos; el Gambito Kaspárov o su uso de la Najdorf y la India de Rey marcaron época.</Legacy>
@@ -199,7 +177,7 @@ function Kasparov() {
           </div>
         </Card>
 
-        <Card n={9} title="Su estilo" icon={Flame}>
+        <Card n={7} title="Su estilo" icon={Flame}>
           <ul className="list-inside list-disc space-y-1">
             <li>Ataque y energía: buscar siempre la iniciativa.</li>
             <li>Cálculo profundo y combinaciones brillantes.</li>
@@ -208,7 +186,7 @@ function Kasparov() {
           </ul>
         </Card>
 
-        <Card n={10} title="Curiosidades y anécdotas" icon={Star}>
+        <Card n={8} title="Curiosidades y anécdotas" icon={Star}>
           <div className="grid gap-4 md:grid-cols-2">
             {[
               ["El problema del periódico", "Con 5 años sorprendió a sus padres resolviendo un problema de ajedrez del periódico que ellos no habían logrado resolver."],
@@ -224,6 +202,30 @@ function Kasparov() {
               </div>
             ))}
           </div>
+        </Card>
+
+        <Card n={9} title="Partidas famosas" icon={Crown}>
+          <div className="mb-5 flex flex-wrap gap-2">
+            {GAMES.map((x, i) => (
+              <button
+                key={x.title}
+                onClick={() => setG(i)}
+                className={`rounded-md border px-4 py-2 text-left ${g === i ? "border-primary bg-primary text-primary-foreground" : "border-border bg-muted hover:border-primary"}`}
+              >
+                <div className="font-display text-sm font-bold">{x.title}</div>
+                <div className="text-xs opacity-80">{x.event}</div>
+              </button>
+            ))}
+          </div>
+          <GameViewer game={GAMES[g]!} />
+        </Card>
+
+        <Card n={10} title="Cronología: desbloquea su carrera" icon={History}>
+          <div className="mb-5 rounded-lg border border-primary/40 bg-secondary px-4 py-3 text-sm">
+            <b className="font-display uppercase tracking-wider text-primary">Cómo funciona</b>
+            <span className="text-muted-foreground"> — cada hito está cerrado con candado. Resuelve el acertijo de la partida de Kaspárov de ese momento para abrir el siguiente.</span>
+          </div>
+          <Timeline milestones={KASPAROV_MILESTONES} player="Kaspárov" scopePrefix="kasparov" />
         </Card>
 
         <Card n={11} title="Fuente: Gambito de Dama · Documental" icon={Youtube}>

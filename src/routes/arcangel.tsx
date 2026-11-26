@@ -78,7 +78,13 @@ function Exercises() {
         ))}
       </div>
       <p className="mb-3 text-sm text-muted-foreground">Resueltos: <b className="text-primary">{done.size}/{EXERCISES.length}</b></p>
-      <PuzzleBoard key={i} m={ex} onSolved={() => setDone((d) => new Set(d).add(i))} />
+      <PuzzleBoard
+        key={i}
+        m={ex}
+        scopeKey={`arcangel:exercise:${ex.year}`}
+        initialSolved={done.has(i)}
+        onSolved={() => setDone((d) => new Set(d).add(i))}
+      />
       {done.has(i) && i < EXERCISES.length - 1 && (
         <button onClick={() => setI(i + 1)} className="mt-4 rounded-md bg-primary px-4 py-2 font-display text-sm text-primary-foreground">Siguiente ejercicio →</button>
       )}
@@ -134,7 +140,7 @@ function ArcangelPage() {
         <Section n={2} title="Tablero de análisis con variantes" icon={Cpu}>
           <p className="mb-4 text-sm text-muted-foreground">Toca cualquier jugada, incluidas variantes y subvariantes (en los recuadros con borde). Las flechas y casillas de colores son las del estudio original. Usa las flechas del teclado para avanzar.</p>
           <Tabs value={g} onChange={setG} />
-          <PgnStudyViewer game={STUDY[g]!} intro={LABELS[g]?.intro} />
+          <PgnStudyViewer game={STUDY[g]!} intro={LABELS[g]?.intro} studyId={`arcangel-study-${g + 1}`} />
         </Section>
 
         <Section n={3} title="Ejercicios del estudio" icon={Dumbbell}>
@@ -147,7 +153,11 @@ function ArcangelPage() {
             <b className="font-display uppercase tracking-wider text-primary">Isle of Man Masters 2017 · Ronda 8 · C78 · 0‑1</b>
             <span className="text-muted-foreground"> — Caruana probó la novedad 15.g4, pero Carlsen reorganizó sus piezas, rompió con 26...d5! y remató con 35...Af4.</span>
           </div>
-          <PgnStudyViewer game={famous} intro="Fabiano Caruana (blancas) contra Magnus Carlsen (negras). Avanza jugada a jugada para ver cómo la Arcángel moderna se convierte en una clase de coordinación." />
+          <PgnStudyViewer
+            game={famous}
+            studyId="arcangel-caruana-carlsen-2017"
+            intro="Fabiano Caruana (blancas) contra Magnus Carlsen (negras). Avanza jugada a jugada para ver cómo la Arcángel moderna se convierte en una clase de coordinación."
+          />
         </Section>
 
       </div>

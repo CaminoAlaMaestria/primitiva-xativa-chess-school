@@ -408,3 +408,20 @@ footer { max-width: 1500px; padding: 25px clamp(18px, 4vw, 64px); margin: auto; 
 .move-log-wrap .nag-bar { margin: 0 0 8px; }
 /* Botones de profesor: visibles solo tras la contraseña */
 body:not(.teacher-ok) #openSourceBtn, body:not(.teacher-ok) #openTextEditorBtn { display: none !important; }
+
+/* Marcas PGN: casillas de color y flechas SVG */
+.chessboard, .kv-board { position: relative; }
+.pgn-sq-mark { position: absolute; inset: 0; opacity: 0.55; pointer-events: none; z-index: 0; }
+.pgn-arrow-origin { outline: 3px solid #2ea043; outline-offset: -3px; }
+.chessboard .pgn-arrow-svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 4; }
+.kv-board .pgn-arrow-svg { position: absolute; inset: 14px; width: calc(100% - 28px); height: calc(100% - 28px); pointer-events: none; z-index: 4; }
+.pgn-marks-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 8px; padding: 8px 10px; border: 1px solid #c9d6d2; border-radius: 8px; background: #fff; color: #071d2f; font-size: 12px; }
+.pgn-marks-label { font-weight: 800; text-transform: uppercase; letter-spacing: .04em; margin-right: 4px; }
+.pgn-tool-btn { border: 1px solid #adc2c8; background: #fff; color: #071d2f; border-radius: 5px; padding: 4px 8px; font-weight: 700; cursor: pointer; }
+.pgn-tool-btn.active { background: #071d2f; border-color: #071d2f; color: #fff; }
+.pgn-tool-btn:disabled { opacity: 0.4; cursor: default; }
+.pgn-color-group { display: inline-flex; align-items: center; gap: 5px; margin: 0 4px; }
+.pgn-color-dot { width: 20px; height: 20px; border-radius: 999px; border: 2px solid #071d2f; cursor: pointer; padding: 0; }
+.pgn-color-dot.active { transform: scale(1.15); box-shadow: 0 0 0 2px #92c4b7; }
+.pgn-clear-btn { margin-left: auto; }
+

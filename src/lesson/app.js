@@ -1,7 +1,19 @@
 import { Chess } from 'chess.js';
 import { supabase } from '@/integrations/supabase/client';
+import {
+  analyzePositionOffline,
+  flushPendingLessonMoves,
+  formatEvalScore,
+  LessonMarksController,
+  readPendingLessonMoves,
+  saveLessonMovesOfflineFirst,
+} from '@/lib/lesson-marks';
 import bakedPositions from './baked-positions.json';
 import { parseStoredObject, sanitizeBoardStyle, sanitizePositions, sanitizeTexts } from './storage.js';
+
+const boardMarks = new LessonMarksController('peones-bajo-presion');
+let cancelMainEng = null;
+const sectionEngCancel = { ejercicio: null, partida: null };
 
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
@@ -613,8 +625,10 @@ function saveMoves() {
   const moves = lineMoves.map(({ uci, nag }) => ({ uci, nag }));
   positions[key].moves = moves;
   $('#movesStatus').textContent = 'Guardando partida…';
-  supabase.from('diagram_positions').upsert({ key, fen: positions[key].fen, moves, updated_at: new Date().toISOString() }).then(({ error }) => {
-    $('#movesStatus').textContent = error ? 'No se pudo guardar la partida.' : `Partida de ${key} guardada en la nube.`;
+  saveLessonMovesOfflineFirst('peones-bajo-presion', key, positions[key].fen, moves).then((res) => {
+    $('#movesStatus').textContent = res.cloud
+      ? `Partida de ${key} guardada aquí y en la nube.`
+      : `Partida de ${key} guardada localmente · se subirá al volver internet.`;
   });
 }
 let boardEditMode = false;
@@ -674,18 +688,28 @@ function updateMainEngine(force) {
   const out = document.getElementById('mainEngOut'), btn = document.getElementById('mainEngToggle');
   if (!out || !btn) return;
   btn.textContent = mainEng ? 'Activado' : 'Desactivado'; btn.classList.toggle('on', mainEng);
-  if (!mainEng) { out.textContent = 'Motor apagado.'; mainEngFen = ''; return; }
+  if (!mainEng) {
+    if (cancelMainEng) { cancelMainEng(); cancelMainEng = null; }
+    out.textContent = 'Motor apagado.';
+    mainEngFen = '';
+    return;
+  }
   const reqFen = game.fen(); if (!force && reqFen === mainEngFen) return; mainEngFen = reqFen;
-  out.textContent = 'Analizando…';
-  fetch(`https://lichess.org/api/cloud-eval?fen=${encodeURIComponent(reqFen)}&multiPv=1`).then(r => r.ok ? r.json() : null).then(d => {
-    if (mainEngFen !== reqFen) return;
-    const pv = d && d.pvs && d.pvs[0];
-    if (!pv) { out.textContent = 'Sin evaluación disponible para esta posición.'; return; }
-    const score = pv.mate != null ? `M${pv.mate}` : ((pv.cp > 0 ? '+' : '') + (pv.cp / 100).toFixed(2));
-    const c = new Chess(reqFen); const san = [];
-    for (const u of pv.moves.split(' ').slice(0, 6)) { try { const m = c.move({ from: u.slice(0,2), to: u.slice(2,4), promotion: u[4] || 'q' }); if (!m) break; san.push(m.san); } catch { break; } }
-    out.innerHTML = `<b class="kv-eng-score">${score}</b><span>Mejor línea: ${san.join(' ')}</span>`;
-  }).catch(() => { if (mainEngFen === reqFen) out.textContent = 'No se pudo consultar el motor.'; });
+  if (cancelMainEng) { cancelMainEng(); cancelMainEng = null; }
+  out.textContent = 'Analizando localmente sin conexión…';
+  cancelMainEng = analyzePositionOffline(
+    reqFen,
+    13,
+    (ev) => {
+      if (!mainEng || mainEngFen !== reqFen) return;
+      const score = formatEvalScore(ev);
+      const tail = ev.terminal ? '' : `<span>Mejor línea: ${ev.line.join(' ')} (prof. ${ev.depth})</span>`;
+      out.innerHTML = `<b class="kv-eng-score">${score}</b>${tail}`;
+    },
+    (err) => {
+      if (mainEng && mainEngFen === reqFen) out.textContent = err || 'No se pudo analizar la posición.';
+    },
+  );
 }
 function renderBoard() {
   setTimeout(() => updateMainEngine(false), 0);
@@ -730,6 +754,17 @@ function renderBoard() {
     cell.addEventListener('click', () => handleSquare(square));
     board.append(cell);
   });
+  const markKey = `${activePosition}:${cursor}`;
+  const boardCol = board.closest('.board-col');
+  let marksHost = document.getElementById('mainMarksToolbar');
+  if (!marksHost && boardCol) {
+    marksHost = document.createElement('div');
+    marksHost.id = 'mainMarksToolbar';
+    boardCol.append(marksHost);
+  }
+  const redrawMain = () => renderBoard();
+  boardMarks.decorateBoard(board, markKey, orientation === 'black', redrawMain);
+  boardMarks.renderToolbar(marksHost, markKey, redrawMain);
   $('#turnLabel').textContent = boardEditMode ? 'Edición' : (game.isGameOver() ? 'Partida terminada' : displaySide());
   renderMoveLog();
 }
@@ -1190,16 +1225,18 @@ function initEngine() {
         return;
       }
       if (data.startsWith('info ')) {
+        if (/\b(upperbound|lowerbound)\b/.test(data)) return;
         const depthMatch = data.match(/\bdepth (\d+)/);
         const multiMatch = data.match(/\bmultipv (\d+)/);
         const scoreMatch = data.match(/\bscore (cp|mate) (-?\d+)/);
         const pvMatch = data.match(/\bpv (.+)$/);
         if (depthMatch && scoreMatch && pvMatch) {
           const multi = Number(multiMatch?.[1] || 1);
+          const sign = game.turn() === 'w' ? 1 : -1;
           engineLines.set(multi, {
             depth: Number(depthMatch[1]),
             type: scoreMatch[1],
-            score: Number(scoreMatch[2]),
+            score: Number(scoreMatch[2]) * sign,
             pv: pvMatch[1],
             fen: game.fen()
           });
@@ -1554,6 +1591,16 @@ let lessonStarted = false;
 export function startLesson() {
   if (lessonStarted) return;
   lessonStarted = true;
+  boardMarks.initSync(() => {
+    renderBoard();
+    renderSectionViewer('ejercicio');
+    renderSectionViewer('partida');
+  });
+  window.addEventListener('online', () => {
+    flushPendingLessonMoves('peones-bajo-presion').then((n) => {
+      if (n > 0) syncCloudPositions();
+    });
+  });
   [renderUnitTabs, renderLesson, renderDiagramList, () => loadPosition(activePosition), initializeEvents, applyBoardStyle, initEngine]
     .forEach(step => { try { step(); } catch (error) { console.error('Error al iniciar la clase:', error); } });
   syncCloudPositions();
@@ -1561,6 +1608,8 @@ export function startLesson() {
 
 async function syncCloudPositions() {
   try {
+    await flushPendingLessonMoves('peones-bajo-presion');
+    const pendingMoves = readPendingLessonMoves('peones-bajo-presion');
     const { data, error } = await supabase.from('diagram_positions').select('key, fen, moves');
     if (error || !data) return;
     const cloudKeys = new Set();
@@ -1568,13 +1617,27 @@ async function syncCloudPositions() {
     data.forEach(({ key, fen, moves }) => {
       if (!positions[key] || validityOf(fen) !== null) return;
       cloudKeys.add(key);
+      if (pendingMoves[key]) {
+        local[key] = { fen: pendingMoves[key].fen };
+        positions[key].fen = pendingMoves[key].fen;
+        positions[key].line = [];
+        positions[key].moves = pendingMoves[key].moves;
+        return;
+      }
       local[key] = { fen };
       positions[key].fen = fen;
       positions[key].line = [];
       positions[key].moves = Array.isArray(moves) ? moves : [];
     });
     Object.keys(positions).forEach(key => {
-      if (!cloudKeys.has(key)) { positions[key].moves = [...originalMoves[key]]; positions[key].fen = originalFens[key]; positions[key].line = [...originalLines[key]]; }
+      if (pendingMoves[key]) {
+        local[key] = { fen: pendingMoves[key].fen };
+        positions[key].fen = pendingMoves[key].fen;
+        positions[key].line = [];
+        positions[key].moves = pendingMoves[key].moves;
+      } else if (!cloudKeys.has(key)) {
+        positions[key].moves = [...originalMoves[key]]; positions[key].fen = originalFens[key]; positions[key].line = [...originalLines[key]];
+      }
     });
     writeStored('peones-bajo-presion-positions', local);
     renderDiagramList();
@@ -1642,14 +1705,19 @@ function renderSectionViewer(group) {
         <div class="kv-nav">
           <button data-nav="first" aria-label="Inicio">⏮</button><button data-nav="prev" aria-label="Anterior">◀</button><button data-nav="play" aria-label="Reproducir">▷</button><button data-nav="next" aria-label="Siguiente">▶</button><button data-nav="last" aria-label="Final">⏭</button><button data-flip aria-label="Girar tablero" title="Girar tablero">⇅</button>
         </div>
+        <div class="kv-marks-host"></div>
       </div>
       <div class="kv-right">
         <div class="kv-comment"><span>${last ? `Jugada ${Math.ceil((st.ply + (blackFirst ? 1 : 0)) / 2)}. ${last.san}` : (group === 'partida' ? 'Partida famosa' : 'Ejercicio ' + st.key)}</span><p>${p.question || p.note || ''}</p></div>
         <details class="kv-sol"><summary>${label}</summary><p>${p.solution || ''}</p></details>
         <div class="kv-notation">${notation || '<em>Sin jugadas: analiza la posición en el tablero.</em>'}</div>
-        <div class="kv-engine"><div class="kv-engine-head"><span>Módulo de análisis</span><button class="kv-eng-toggle ${st.eng ? 'on' : ''}" data-eng>${st.eng ? 'Activado' : 'Desactivado'}</button></div><div class="kv-eng-out">${st.eng ? 'Analizando…' : 'Motor apagado.'}</div></div>
+        <div class="kv-engine"><div class="kv-engine-head"><span>Módulo de análisis local (Stockfish 19)</span><button class="kv-eng-toggle ${st.eng ? 'on' : ''}" data-eng>${st.eng ? 'Activado' : 'Desactivado'}</button></div><div class="kv-eng-out">${st.eng ? 'Analizando localmente sin conexión…' : 'Motor apagado.'}</div></div>
       </div>
     </div>`;
+  const secMarkKey = `${group}:${st.key}:${st.ply}`;
+  const redrawSection = () => renderSectionViewer(group);
+  boardMarks.decorateBoard(host.querySelector('.kv-board'), secMarkKey, Boolean(st.flip), redrawSection);
+  boardMarks.renderToolbar(host.querySelector('.kv-marks-host'), secMarkKey, redrawSection);
   host.querySelectorAll('.kv-tab').forEach(b => b.addEventListener('click', () => { stopSectionPlay(group); st.key = b.dataset.key; st.ply = 0; st.pick = null; st.msg = ''; renderSectionViewer(group); }));
   host.querySelectorAll('.kv-mv').forEach(b => b.addEventListener('click', () => { stopSectionPlay(group); st.ply = Number(b.dataset.ply); renderSectionViewer(group); }));
   if (!solved) host.querySelectorAll('.kv-sq').forEach(d => d.addEventListener('click', () => {
@@ -1664,17 +1732,23 @@ function renderSectionViewer(group) {
   }));
   host.querySelector('[data-flip]').addEventListener('click', () => { st.flip = !st.flip; renderSectionViewer(group); });
   host.querySelector('[data-eng]').addEventListener('click', () => { st.eng = !st.eng; renderSectionViewer(group); });
+  if (sectionEngCancel[group]) { sectionEngCancel[group](); sectionEngCancel[group] = null; }
   if (st.eng) {
-    const out = host.querySelector('.kv-eng-out'); const reqFen = fen;
-    fetch(`https://lichess.org/api/cloud-eval?fen=${encodeURIComponent(reqFen)}&multiPv=1`).then(r => r.ok ? r.json() : null).then(d => {
-      if (!out.isConnected) return;
-      const pv = d && d.pvs && d.pvs[0];
-      if (!pv) { out.textContent = 'Sin evaluación disponible para esta posición.'; return; }
-      const score = pv.mate != null ? `M${pv.mate}` : ((pv.cp > 0 ? '+' : '') + (pv.cp / 100).toFixed(2));
-      const c = new Chess(reqFen); const san = [];
-      for (const u of pv.moves.split(' ').slice(0, 6)) { try { const m = c.move({ from: u.slice(0,2), to: u.slice(2,4), promotion: u[4] || 'q' }); if (!m) break; san.push(m.san); } catch { break; } }
-      out.innerHTML = `<b class="kv-eng-score">${score}</b><span>Mejor línea: ${san.join(' ')}</span>`;
-    }).catch(() => { if (out.isConnected) out.textContent = 'No se pudo consultar el motor.'; });
+    const out = host.querySelector('.kv-eng-out');
+    const reqFen = fen;
+    sectionEngCancel[group] = analyzePositionOffline(
+      reqFen,
+      13,
+      (ev) => {
+        if (!out || !out.isConnected) return;
+        const score = formatEvalScore(ev);
+        const tail = ev.terminal ? '' : `<span>Mejor línea: ${ev.line.join(' ')} (prof. ${ev.depth})</span>`;
+        out.innerHTML = `<b class="kv-eng-score">${score}</b>${tail}`;
+      },
+      (err) => {
+        if (out && out.isConnected) out.textContent = err || 'No se pudo analizar la posición.';
+      },
+    );
   }
   host.querySelector(".kv-open")?.addEventListener("click", () => loadPosition(st.key, true));
   host.querySelectorAll('[data-nav]').forEach(b => b.addEventListener('click', () => {

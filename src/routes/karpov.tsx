@@ -23,6 +23,7 @@ export const Route = createFileRoute("/karpov")({
 
 const GAMES: Game[] = [
   {
+    id: "karpov-unzicker-1974",
     title: "Kárpov – Unzicker",
     event: "Olimpiada de Niza, 1974 · Ruy López",
     result: "1-0",
@@ -44,6 +45,7 @@ const GAMES: Game[] = [
     },
   },
   {
+    id: "karpov-topalov-1994",
     title: "Kárpov – Topálov",
     event: "Linares, 1994 · Defensa Grünfeld",
     result: "1-0 (fragmento)",
@@ -152,31 +154,7 @@ function Index() {
           <p className="mt-4">Dos estilos y dos Unión Soviéticas: el campeón del sistema, sobrio y posicional, contra el joven dinámico y rebelde de Bakú.</p>
         </Card>
 
-        <Card n={6} title="Partidas famosas" icon={Crown}>
-          <div className="mb-5 flex flex-wrap gap-2">
-            {GAMES.map((x, i) => (
-              <button
-                key={x.title}
-                onClick={() => setG(i)}
-                className={`rounded-md border px-4 py-2 text-left ${g === i ? "border-primary bg-primary text-primary-foreground" : "border-border bg-muted hover:border-primary"}`}
-              >
-                <div className="font-display text-sm font-bold">{x.title}</div>
-                <div className="text-xs opacity-80">{x.event}</div>
-              </button>
-            ))}
-          </div>
-          <GameViewer game={GAMES[g]!} />
-        </Card>
-
-        <Card n={7} title="Cronología: desbloquea su carrera" icon={History}>
-          <div className="mb-5 rounded-lg border border-primary/40 bg-secondary px-4 py-3 text-sm">
-            <b className="font-display uppercase tracking-wider text-primary">Cómo funciona</b>
-            <span className="text-muted-foreground"> — cada hito está cerrado con candado. Resuelve el acertijo de la partida de Kárpov de ese momento para abrir el siguiente.</span>
-          </div>
-          <Timeline />
-        </Card>
-
-        <Card n={8} title="Su legado al ajedrez" icon={Landmark} className="border-2 border-primary/80 shadow-[0_0_60px_-15px_var(--primary)]">
+        <Card n={6} title="Su legado al ajedrez" icon={Landmark} className="border-2 border-primary/80 shadow-[0_0_60px_-15px_var(--primary)]">
           <div className="mb-5 rounded-lg border border-primary/40 bg-secondary px-4 py-3 text-sm">
             <b className="font-display uppercase tracking-wider text-primary">Sección destacada</b>
             <span className="text-muted-foreground"> — lo que Kárpov dejó escrito en la historia del ajedrez.</span>
@@ -218,7 +196,7 @@ function Index() {
         </Card>
 
         <div>
-          <Card n={9} title="Su estilo" icon={Star}>
+          <Card n={7} title="Su estilo" icon={Star}>
             <ul className="list-inside list-disc space-y-1">
               <li>Prevenir antes que atacar: quitar al rival sus jugadas.</li>
               <li>Mejorar piezas poco a poco.</li>
@@ -228,7 +206,7 @@ function Index() {
           </Card>
         </div>
 
-        <Card n={10} title="Curiosidades y anécdotas" icon={Star}>
+        <Card n={8} title="Curiosidades y anécdotas" icon={Star}>
           <div className="grid gap-4 md:grid-cols-2">
             {[
               ["El yogur de Baguio (1978)", "En el Mundial contra Korchnói, su equipo le llevó un yogur de arándanos durante una partida. El rival protestó: podía ser un mensaje en clave. Se acordó entonces regular hasta el postre."],
@@ -246,6 +224,30 @@ function Index() {
               </div>
             ))}
           </div>
+        </Card>
+
+        <Card n={9} title="Partidas famosas" icon={Crown}>
+          <div className="mb-5 flex flex-wrap gap-2">
+            {GAMES.map((x, i) => (
+              <button
+                key={x.title}
+                onClick={() => setG(i)}
+                className={`rounded-md border px-4 py-2 text-left ${g === i ? "border-primary bg-primary text-primary-foreground" : "border-border bg-muted hover:border-primary"}`}
+              >
+                <div className="font-display text-sm font-bold">{x.title}</div>
+                <div className="text-xs opacity-80">{x.event}</div>
+              </button>
+            ))}
+          </div>
+          <GameViewer game={GAMES[g]!} />
+        </Card>
+
+        <Card n={10} title="Cronología: desbloquea su carrera" icon={History}>
+          <div className="mb-5 rounded-lg border border-primary/40 bg-secondary px-4 py-3 text-sm">
+            <b className="font-display uppercase tracking-wider text-primary">Cómo funciona</b>
+            <span className="text-muted-foreground"> — cada hito está cerrado con candado. Resuelve el acertijo de la partida de Kárpov de ese momento para abrir el siguiente.</span>
+          </div>
+          <Timeline scopePrefix="karpov" />
         </Card>
 
         <Card n={11} title="Fuente: JAQUEa2 · Ep. 77" icon={Mic}>

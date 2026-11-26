@@ -13,6 +13,7 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { registerOfflineSW } from "../lib/register-sw";
+import { registerOfflineAutoSync } from "../lib/game-variants";
 
 function NotFoundComponent() {
   return (
@@ -125,6 +126,7 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   useEffect(() => {
     void registerOfflineSW();
+    registerOfflineAutoSync();
   }, []);
 
   return (
